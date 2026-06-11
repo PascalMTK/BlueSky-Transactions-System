@@ -1,28 +1,11 @@
 {
   "version": 2,
   "framework": null,
-  "builds": [
-    {
-      "src": "public/index.php",
-      "use": "@vercel/php"
-    },
-    {
-      "src": "public/css/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/js/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/images/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/favicon.ico",
-      "use": "@vercel/static"
+  "functions": {
+    "public/index.php": {
+      "runtime": "vercel-php@0.7.2"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/favicon.ico",
