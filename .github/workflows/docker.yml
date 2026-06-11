@@ -24,26 +24,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/pascalmtk/bluesky-transactions
-          tags: |
-            type=raw,value=latest
-            type=sha,prefix=
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/pascalmtk/bluesky-transactions:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/PascalMTK/BlueSky-Transactions-System
+            org.opencontainers.image.visibility=public
 
-      - name: Image published
-        run: |
-          echo "✅ Image published:"
-          echo "   ghcr.io/pascalmtk/bluesky-transactions:latest"
-          echo ""
-          echo "Use this image on Koyeb, Railway, Render or any Docker host."
+      - name: Summary
+        run: echo "✅ Image ready at ghcr.io/pascalmtk/bluesky-transactions:latest"
