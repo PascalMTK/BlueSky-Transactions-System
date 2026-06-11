@@ -1,36 +1,37 @@
 # BlueSky Transactions System
 
-Plateforme web de gestion de transferts d'argent internationaux vers 8 pays africains. Interface bilingue (FR/EN), tableau de bord admin avec graphiques, gestion des agents, et suivi complet des transactions.
+A web platform for managing international money transfers to 8 African countries. Bilingual interface (EN/FR), admin dashboard with charts, agent management, and full transaction tracking.
 
 ---
 
-## Stack technique
+## Tech Stack
 
-- **Backend** : PHP 8.2+, Laravel 12
-- **Frontend** : Blade, Vite, Tailwind CSS 4
-- **Base de données** : MySQL
-- **CSS/JS** : Système de design custom, dark mode, animations
-
----
-
-## Fonctionnalités
-
-- Gestion des transactions avec calcul automatique des frais
-- Tableau de bord admin : graphiques, statistiques, gestion des agents
-- Tableau de bord agent : stats personnelles, historique
-- Workflow d'approbation des agents (inscription → activation par l'admin)
-- Interface bilingue EN / FR avec switch en temps réel
-- Mode sombre / clair (sauvegardé en localStorage)
-- Export CSV (admin : toutes transactions, agent : ses propres transactions)
-- Reçus imprimables par transaction
-- Système de tickets de support (agents → admin)
-- 8 pays africains avec frais configurables par pays
-- Contrôle d'accès par rôle (admin / agent)
-- Gestion du profil avec photo
+- **Backend**: PHP 8.2+, Laravel 12
+- **Frontend**: Blade, Vite, Tailwind CSS 4
+- **Database**: MySQL
+- **CSS/JS**: Custom design system, dark mode, animations
 
 ---
 
-## Prérequis
+## Features
+
+- Transaction management with automatic fee calculation
+- Admin dashboard: charts, statistics, agent management
+- Agent dashboard: personal stats, transaction history
+- Agent approval workflow (registration → activation by admin)
+- Bilingual interface EN / FR with real-time language switch
+- Dark / light mode (saved in localStorage)
+- CSV export (admin: all transactions, agent: own transactions only)
+- Printable receipts per transaction
+- Support ticket system (agents → admin)
+- 8 African countries with configurable fees per country
+- Role-based access control (admin / agent)
+- Profile management with photo upload
+- Email notification when an agent account is approved
+
+---
+
+## Requirements
 
 - PHP 8.2+
 - XAMPP (Apache + MySQL)
@@ -41,21 +42,21 @@ Plateforme web de gestion de transferts d'argent internationaux vers 8 pays afri
 
 ## Installation
 
-### 1. Démarrer XAMPP
+### 1. Start XAMPP
 
-Ouvre le panneau de contrôle XAMPP et démarre **Apache** et **MySQL**.
+Open the XAMPP control panel and start **Apache** and **MySQL**.
 
-### 2. Créer la base de données
+### 2. Create the database
 
-Dans phpMyAdmin (`http://localhost/phpmyadmin`) ou en ligne de commande :
+In phpMyAdmin (`http://localhost/phpmyadmin`) or via command line:
 
 ```sql
 CREATE DATABASE bluesky_transactions CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3. Configurer l'environnement
+### 3. Configure the environment
 
-Copie `.env.example` en `.env` et configure :
+Copy `.env.example` to `.env` and update:
 
 ```env
 DB_CONNECTION=mysql
@@ -63,101 +64,140 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=bluesky_transactions
 DB_USERNAME=root
-DB_PASSWORD=          # laisser vide si pas de mot de passe XAMPP
+DB_PASSWORD=          # leave empty if no XAMPP password set
 ```
 
-### 4. Installer les dépendances
+### 4. Install dependencies
 
 ```bash
 composer install
 npm install
 ```
 
-### 5. Générer la clé d'application
+### 5. Generate the application key
 
 ```bash
 php artisan key:generate
 ```
 
-### 6. Lancer les migrations et les seeders
+### 6. Run migrations and seeders
 
 ```bash
 php artisan migrate
 php artisan db:seed
 ```
 
-### 7. Compiler les assets (optionnel pour le dev)
+### 7. Build assets (optional for development)
 
 ```bash
 npm run dev
 ```
 
-### 8. Démarrer le serveur
+### 8. Start the development server
 
 ```bash
 php artisan serve
 ```
 
-Ouvrir dans le navigateur : **http://localhost:8000**
+Open in your browser: **http://localhost:8000**
 
-> **Raccourci Windows** : double-clique sur `START_BLUESKY.bat` pour démarrer automatiquement.
+> **Windows shortcut**: double-click `START_BLUESKY.bat` to start everything automatically.
 
 ---
 
-## Compte admin par défaut
+## One-command setup
 
-| Email | Mot de passe |
-|-------|-------------|
+The `composer setup` script handles steps 4–7 in one go:
+
+```bash
+composer setup
+```
+
+---
+
+## Default Admin Account
+
+| Email | Password |
+|-------|----------|
 | admin@bluesky.com | Admin@2024! |
 
 ---
 
-## Pays supportés
+## Supported Countries
 
-| Drapeau | Pays | Code | Devise |
-|---------|------|------|--------|
-| 🇨🇩 | RD Congo | CD | CDF |
-| 🇿🇲 | Zambie | ZM | ZMW |
-| 🇹🇿 | Tanzanie | TZ | TZS |
+| Flag | Country | Code | Currency |
+|------|---------|------|----------|
+| 🇨🇩 | DR Congo | CD | CDF |
+| 🇿🇲 | Zambia | ZM | ZMW |
+| 🇹🇿 | Tanzania | TZ | TZS |
 | 🇰🇪 | Kenya | KE | KES |
 | 🇲🇼 | Malawi | MW | MWK |
 | 🇿🇼 | Zimbabwe | ZW | ZWL |
-| 🇿🇦 | Afrique du Sud | ZA | ZAR |
-| 🇳🇦 | Namibie | NA | NAD |
+| 🇿🇦 | South Africa | ZA | ZAR |
+| 🇳🇦 | Namibia | NA | NAD |
 
 ---
 
-## Structure du projet
+## Project Structure
 
 ```
 bluesky-transactions/
 ├── app/
 │   ├── Http/
-│   │   ├── Controllers/        # 10 contrôleurs (Auth, Admin, Agent, Transaction...)
+│   │   ├── Controllers/        # 10 controllers (Auth, Admin, Agent, Transaction, Country, Export, Profile, Lang, AgentReport)
 │   │   └── Middleware/         # RoleMiddleware, SetLocale
+│   ├── Mail/                   # AgentApprovedMail
 │   └── Models/                 # User, Transaction, Country, AgentReport
 ├── database/
-│   ├── migrations/             # Structure de la base de données
+│   ├── migrations/             # Database schema (users, countries, transactions, agent_reports)
 │   └── seeders/                # CountrySeeder, AdminSeeder
 ├── lang/
-│   ├── en/                     # Traductions anglaises
-│   └── fr/                     # Traductions françaises
+│   ├── en/                     # English translations
+│   └── fr/                     # French translations
 ├── public/
-│   ├── css/bluesky.css         # Système de design complet (dark mode)
-│   ├── js/bluesky.js           # Dark mode, animations, compteurs
-│   └── images/                 # logo.png + images UI
-├── resources/views/            # 29 templates Blade
-│   ├── admin/                  # Dashboard, agents, transactions, stats, pays
-│   ├── agent/                  # Dashboard, transactions, profil
-│   ├── auth/                   # Login, inscription
-│   └── layouts/app.blade.php   # Layout principal (sidebar + topbar)
-├── routes/web.php              # Toutes les routes de l'application
-├── .env                        # Configuration environnement
-└── START_BLUESKY.bat           # Script démarrage Windows
+│   ├── css/bluesky.css         # Full design system (dark mode, animations)
+│   ├── js/bluesky.js           # Dark mode toggle, animations, counters
+│   └── images/                 # logo.png + UI images
+├── resources/views/            # 20 Blade templates
+│   ├── admin/                  # Dashboard, agents, transactions, statistics, countries, reports
+│   ├── agent/                  # Dashboard, transactions (list/create/edit/show/print), profile
+│   ├── auth/                   # Login, register
+│   ├── emails/                 # Agent approved email template
+│   ├── components/             # Flag component
+│   └── layouts/app.blade.php   # Main layout (sidebar + topbar)
+├── routes/web.php              # All application routes
+├── .env.example                # Environment template
+└── START_BLUESKY.bat           # Windows auto-start script
 ```
 
 ---
 
-## Licence
+## Routes Overview
+
+| Method | URI | Description |
+|--------|-----|-------------|
+| GET | `/login` | Login page |
+| GET | `/register` | Agent registration |
+| GET | `/admin/dashboard` | Admin dashboard |
+| GET | `/admin/agents` | Agent list & approval |
+| PATCH | `/admin/agents/{id}/status` | Activate / deactivate agent |
+| PATCH | `/admin/agents/{id}/promote` | Promote agent to admin |
+| GET | `/admin/transactions` | All transactions (admin) |
+| GET | `/admin/statistics` | Statistics & charts |
+| GET | `/admin/countries` | Country & fee management |
+| GET | `/admin/reports` | Support tickets (admin view) |
+| GET | `/admin/export/csv` | Export all transactions as CSV |
+| GET | `/agent/dashboard` | Agent dashboard |
+| GET | `/agent/transactions` | Agent's own transactions |
+| GET | `/agent/transactions/create` | New transaction form |
+| GET | `/agent/transactions/{id}/print` | Printable receipt |
+| GET | `/agent/export/csv` | Export own transactions as CSV |
+| POST | `/agent/reports` | Submit a support ticket |
+| GET/PUT | `/profile` | View / update profile |
+| GET | `/lang/{locale}` | Switch language (en/fr) |
+
+---
+
+## License
 
 MIT
