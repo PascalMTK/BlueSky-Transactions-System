@@ -379,8 +379,10 @@
 </div>
 
 <script>
-  const DEFAULT_URL = 'http://localhost:8000/login';
-  const STORAGE_KEY = 'bluesky-server-url';
+  // ← Remplace cette URL par ton URL Railway après déploiement
+  const RAILWAY_URL  = '';   // ex: 'https://bluesky.up.railway.app'
+  const DEFAULT_URL  = RAILWAY_URL ? RAILWAY_URL + '/login' : 'http://localhost:8000/login';
+  const STORAGE_KEY  = 'bluesky-server-url';
 
   function initBtn() {
     const saved = localStorage.getItem(STORAGE_KEY) || DEFAULT_URL;
