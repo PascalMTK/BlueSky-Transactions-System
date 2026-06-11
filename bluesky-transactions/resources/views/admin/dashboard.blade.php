@@ -11,7 +11,7 @@
     <div class="stat-card blue animate-on-scroll">
         <div class="stat-icon blue">💸</div>
         <div class="stat-info">
-            <div class="stat-value" data-counter="{{ $stats['total_transactions'] }}">0</div>
+            <div class="stat-value" data-counter="{{ $stats['total_transactions'] }}">{{ number_format($stats['total_transactions']) }}</div>
             <div class="stat-label">{{ __('app.total_transactions') }}</div>
             <div class="stat-change">📅 {{ number_format($stats['transactions_today']) }} {{ __('app.today') }}</div>
         </div>
@@ -38,7 +38,7 @@
     <div class="stat-card purple animate-on-scroll">
         <div class="stat-icon purple">👥</div>
         <div class="stat-info">
-            <div class="stat-value" data-counter="{{ $stats['active_agents'] }}">0</div>
+            <div class="stat-value" data-counter="{{ $stats['active_agents'] }}">{{ number_format($stats['active_agents']) }}</div>
             <div class="stat-label">{{ __('app.active_agents') }} / {{ $stats['total_agents'] }}</div>
             @if($stats['pending_agents'] > 0)
                 <div class="stat-change negative">⚠️ {{ $stats['pending_agents'] }} {{ __('app.waiting') }}</div>
@@ -48,7 +48,7 @@
     <div class="stat-card teal animate-on-scroll">
         <div class="stat-icon teal">🌍</div>
         <div class="stat-info">
-            <div class="stat-value" data-counter="{{ $stats['countries_active'] }}">0</div>
+            <div class="stat-value" data-counter="{{ $stats['countries_active'] }}">{{ number_format($stats['countries_active']) }}</div>
             <div class="stat-label">{{ __('app.operational_countries') }}</div>
             <div class="stat-change">{{ __('app.subsaharan') }}</div>
         </div>
@@ -56,7 +56,7 @@
     <div class="stat-card red animate-on-scroll">
         <div class="stat-icon red">📆</div>
         <div class="stat-info">
-            <div class="stat-value" data-counter="{{ $stats['transactions_month'] }}">0</div>
+            <div class="stat-value" data-counter="{{ $stats['transactions_month'] }}">{{ number_format($stats['transactions_month']) }}</div>
             <div class="stat-label">{{ __('app.transactions_month') }}</div>
             <div class="stat-change">{{ now()->locale(app()->getLocale())->monthName }} {{ now()->year }}</div>
         </div>

@@ -25,11 +25,23 @@ echo  [2/4] Setting up the database...
 echo  [OK] Database ready
 
 :: Run migrations and seeders
-echo  [3/4] Running migrations and seeders...
+echo  [3/5] Running migrations and seeders...
 php artisan migrate --seed --force
 echo  [OK] Database migrated and seeded
 
-echo  [4/4] Starting development server...
+:: Clear caches and fix storage symlink
+echo  [4/5] Clearing caches and fixing storage link...
+php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
+IF EXIST "public\storage" (
+    rmdir "public\storage" 2>nul || del /f "public\storage" 2>nul
+)
+php artisan storage:link
+echo  [OK] Caches cleared and storage linked
+
+echo  [5/5] Starting development server...
 echo.
 echo  ======================================
 echo   Application available at:

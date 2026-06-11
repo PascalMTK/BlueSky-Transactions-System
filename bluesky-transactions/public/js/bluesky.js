@@ -80,18 +80,26 @@ const CounterManager = {
     },
 
     animateCounter(el) {
-        const target  = parseFloat(el.dataset.counter.replace(/[^0-9.]/g, ''));
-        const suffix  = el.dataset.suffix || '';
-        const prefix  = el.dataset.prefix || '';
+        const target   = parseFloat(el.dataset.counter.replace(/[^0-9.]/g, ''));
+        const suffix   = el.dataset.suffix || '';
+        const prefix   = el.dataset.prefix || '';
         const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
-        const duration = 1800;
-        const start = performance.now();
 
+        // Start from the server-rendered value (avoids 0-flash when values are pre-rendered)
+        const rawText  = el.textContent.trim().replace(/[\s ]/g, '').replace(/,/g, '.');
+        const startFrom = Math.min(parseFloat(rawText) || 0, target);
+
+        // Already showing the correct value — no animation needed
+        if (startFrom === target) return;
+
+        const duration = 1400;
+        const range    = target - startFrom;
+        const start    = performance.now();
         const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 
         const update = (now) => {
             const elapsed = Math.min((now - start) / duration, 1);
-            const value = target * easeOutExpo(elapsed);
+            const value   = startFrom + range * easeOutExpo(elapsed);
             el.textContent = prefix + this.formatNumber(value, decimals) + suffix;
             if (elapsed < 1) requestAnimationFrame(update);
         };

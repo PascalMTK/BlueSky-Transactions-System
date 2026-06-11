@@ -381,7 +381,7 @@
         <div class="kpi-top-bar" style="background:linear-gradient(90deg,var(--sky-primary),var(--sky-secondary));"></div>
         <div class="kpi-body">
             <div class="kpi-label"><span class="kpi-icon" style="background:rgba(2,132,199,0.12);">📋</span>{{ __('app.total_transactions') }}</div>
-            <div class="kpi-value" data-counter="{{ $stats['total'] }}">0</div>
+            <div class="kpi-value" data-counter="{{ $stats['total'] }}">{{ number_format($stats['total']) }}</div>
             <div class="kpi-sub">📅 {{ $stats['today'] }} {{ __('app.today') }}</div>
         </div>
     </div>
@@ -405,7 +405,7 @@
         <div class="kpi-top-bar" style="background:linear-gradient(90deg,#8B5CF6,#A78BFA);"></div>
         <div class="kpi-body">
             <div class="kpi-label"><span class="kpi-icon" style="background:rgba(139,92,246,0.12);">📆</span>{{ __('app.this_month') }}</div>
-            <div class="kpi-value" data-counter="{{ $stats['month'] }}">0</div>
+            <div class="kpi-value" data-counter="{{ $stats['month'] }}">{{ number_format($stats['month']) }}</div>
             <div class="kpi-sub" style="color:{{ $diff===null?'var(--text-muted)':($diff>=0?'var(--success)':'var(--danger)') }};font-weight:600;">
                 @if($diff!==null){{ $diff>=0?'↑':'↓' }} {{ abs($diff) }}% vs last month@else{{ number_format($stats['month_amount'],0,',',' ') }}@endif
             </div>
