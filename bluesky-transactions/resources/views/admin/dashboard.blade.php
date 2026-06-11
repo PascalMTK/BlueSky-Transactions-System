@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-    <a href="{{ route('reports.index') }}" class="btn btn-sm" style="background:#F59E0B;color:white;font-weight:700;border:none;">{{ __('app.view') }} →</a>
+    <a href="{{ route('admin.reports.index') }}" class="btn btn-sm" style="background:#F59E0B;color:white;font-weight:700;border:none;">{{ __('app.view') }} →</a>
 </div>
 @endif
 
