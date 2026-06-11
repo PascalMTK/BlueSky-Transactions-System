@@ -35,10 +35,6 @@ echo  ======================================
 echo   Application available at:
 echo   http://localhost:8000
 echo.
-echo   Admin Login:
-echo   Email    : admin@bluesky.com
-echo   Password : Admin@2024!
-echo  ======================================
-echo.
+echo  
 start http://localhost:8000
 php artisan serve

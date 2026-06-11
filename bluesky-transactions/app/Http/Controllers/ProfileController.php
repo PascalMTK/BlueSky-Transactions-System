@@ -56,13 +56,21 @@ class ProfileController extends Controller
 
         $user = auth()->user();
 
-        // Delete old photo if exists
-        if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
-            Storage::disk('public')->delete($user->profile_photo);
-        }
+        try {
+            if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
 
-        $path = $request->file('photo')->store('profiles', 'public');
-        $user->update(['profile_photo' => $path]);
+            $path = $request->file('photo')->store('profiles', 'public');
+
+            if (! $path) {
+                return back()->with('error', 'Photo upload is not available in this environment. Please configure cloud storage.');
+            }
+
+            $user->update(['profile_photo' => $path]);
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Photo upload failed. Please configure cloud storage for file uploads.');
+        }
 
         return back()->with('success', 'Profile photo updated successfully!');
     }
