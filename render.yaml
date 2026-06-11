@@ -7,11 +7,11 @@ services:
     autoDeploy: true
     envVars:
       - key: APP_KEY
-        value: base64:3+df9HHCop2mges/DjkQSPFUExdnLto1XTa71xQaLiE=
+        value: "base64:3+df9HHCop2mges/DjkQSPFUExdnLto1XTa71xQaLiE="
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: "false"
       - key: APP_NAME
         value: "BLUESKY Transactions"
       - key: DB_CONNECTION
@@ -45,6 +45,5 @@ services:
 
 databases:
   - name: bluesky-db
-    plan: free
     databaseName: bluesky_transactions
     user: bluesky
