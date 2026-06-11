@@ -1,9 +1,0 @@
-index.html
-assets/
-README.md
-private/
-bluesky-transactions/.env
-bluesky-transactions/node_modules/
-bluesky-transactions/vendor/
-bluesky-transactions/storage/logs/*.log
-bluesky-transactions/.git
