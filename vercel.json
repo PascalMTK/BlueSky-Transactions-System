@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "framework": null,
+  "builds": [
+    {
+      "src": "bluesky-transactions/public/index.php",
+      "use": "@vercel/php",
+      "config": {
+        "includeFiles": "bluesky-transactions/**"
+      }
+    },
+    {
+      "src": "bluesky-transactions/public/css/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "bluesky-transactions/public/js/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "bluesky-transactions/public/images/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "bluesky-transactions/public/favicon.ico",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/favicon.ico",
+      "dest": "/bluesky-transactions/public/favicon.ico"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/bluesky-transactions/public/robots.txt"
+    },
+    {
+      "src": "/(css|js|images)/(.*)",
+      "dest": "/bluesky-transactions/public/$1/$2"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/bluesky-transactions/public/index.php"
+    }
+  ]
+}
