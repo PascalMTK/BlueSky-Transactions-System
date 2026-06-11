@@ -1,9 +1,11 @@
 {
   "version": 2,
   "framework": null,
+  "buildCommand": "cd bluesky-transactions && composer install --no-dev --optimize-autoloader",
   "functions": {
-    "bluesky-transactions/public/index.php": {
-      "runtime": "vercel-php@0.7.2"
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.2",
+      "includeFiles": "bluesky-transactions/**"
     }
   },
   "routes": [
@@ -21,7 +23,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/bluesky-transactions/public/index.php"
+      "dest": "/api/index.php"
     }
   ]
 }
