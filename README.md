@@ -115,14 +115,6 @@ composer setup
 
 ---
 
-## Default Admin Account
-
-| Email | Password |
-|-------|----------|
-| admin@bluesky.com | Admin@2024! |
-
----
-
 ## Supported Countries
 
 | Flag | Country | Code | Currency |
