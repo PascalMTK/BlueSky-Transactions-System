@@ -1,133 +1,198 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="fr" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BLUESKY Transactions — Money Transfer Management</title>
+  <title>BLUESKY Transactions</title>
   <link rel="icon" href="./assets/images/logo.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script>
-    (function(){
-      const t = localStorage.getItem('bluesky-theme') || 'light';
-      document.documentElement.setAttribute('data-theme', t);
-    })();
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>(function(){ const t=localStorage.getItem('bluesky-theme')||'light'; document.documentElement.setAttribute('data-theme',t); })();</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --sky-primary:   #0284C7;
-      --sky-secondary: #0EA5E9;
-      --sky-light:     #BAE6FD;
-      --sky-dark:      #0369A1;
-      --gold:          #F59E0B;
-    }
     [data-theme="light"] {
-      --bg-card:    #ffffff;
-      --bg-input:   #F8FAFC;
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --text-muted:  #94A3B8;
-      --border:      #E2E8F0;
-      --divider:     #E2E8F0;
+      --card-bg: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.12);
+      --input-bg: rgba(255,255,255,0.1);
+      --input-border: rgba(255,255,255,0.2);
+      --input-text: white;
     }
     [data-theme="dark"] {
-      --bg-card:    #0C1520;
-      --bg-input:   #0F1E30;
-      --text-primary: #F1F5F9;
-      --text-secondary: #94A3B8;
-      --text-muted:  #64748B;
-      --border:      #1F2937;
-      --divider:     #1F2937;
+      --card-bg: rgba(0,0,0,0.25);
+      --card-border: rgba(255,255,255,0.08);
+      --input-bg: rgba(0,0,0,0.3);
+      --input-border: rgba(255,255,255,0.12);
+      --input-text: white;
     }
 
-    html, body { height: 100%; }
+    html, body { height: 100%; font-family: 'Inter', system-ui, sans-serif; }
+
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background:
+        radial-gradient(ellipse 70% 55% at 15% 25%, rgba(14,165,233,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 70% at 88% 78%, rgba(99,102,241,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 45% at 50% 108%, rgba(20,184,166,0.10) 0%, transparent 55%),
+        linear-gradient(135deg, #060D1C 0%, #0a1d38 45%, #0b3260 100%);
+      background-size: 250% 250%, 250% 250%, 250% 250%, 100% 100%;
+      animation: meshShift 18s ease-in-out infinite;
       overflow-x: hidden;
-      line-height: 1.6;
     }
-    a { text-decoration: none; color: inherit; }
 
-    /* ── ANIMATED MESH BACKGROUND ── */
     @keyframes meshShift {
       0%   { background-position: 0% 50%,   100% 50%,   50%  0%, 0 0; }
       33%  { background-position: 40% 80%,   60% 20%,   80% 60%, 0 0; }
       66%  { background-position: 80% 20%,   20% 80%,   20% 40%, 0 0; }
       100% { background-position: 0% 50%,   100% 50%,   50%  0%, 0 0; }
     }
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-14px); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes dotPulse { 0%,100%{r:3.2;opacity:1} 50%{r:5;opacity:0.5} }
+    @keyframes dashFlow { to{stroke-dashoffset:-28} }
+    @keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
+
+    /* ── BACKGROUND DECORATIONS ── */
+    .bg-deco { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .bg-deco span { position:absolute; display:block; line-height:1; }
+
+    /* ── MAIN CARD ── */
+    .card {
+      position: relative; z-index: 1;
+      width: min(520px, 94vw);
+      background: var(--card-bg);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 44px 40px 36px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+      animation: fadeUp 0.6s ease both;
     }
 
-    .auth-page {
-      min-height: 100vh;
-      display: flex; align-items: stretch; justify-content: center;
-      background:
-        radial-gradient(ellipse 70% 55% at 15% 25%, rgba(14,165,233,0.14) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 70% at 88% 78%, rgba(99,102,241,0.11) 0%, transparent 55%),
-        radial-gradient(ellipse 80% 45% at 50% 105%, rgba(20,184,166,0.09) 0%, transparent 55%),
-        linear-gradient(135deg, #060D1C 0%, #0a1d38 45%, #0b3260 100%);
-      background-size: 250% 250%, 250% 250%, 250% 250%, 100% 100%;
-      animation: meshShift 20s ease-in-out infinite;
+    /* ── THEME BUTTON ── */
+    .theme-btn {
+      position:absolute; top:18px; right:18px;
+      background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px; padding:6px 10px; font-size:15px; cursor:pointer;
+      color:white; transition:background 0.2s;
     }
-    [data-theme="dark"] .auth-page {
-      background:
-        radial-gradient(ellipse 70% 55% at 15% 25%, rgba(14,165,233,0.10) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 70% at 88% 78%, rgba(99,102,241,0.08) 0%, transparent 55%),
-        linear-gradient(135deg, #030810 0%, #070F1E 45%, #050D1A 100%);
-      background-size: 250% 250%, 250% 250%, 100% 100%;
-      animation: meshShift 20s ease-in-out infinite;
+    .theme-btn:hover { background:rgba(255,255,255,0.15); }
+
+    /* ── LOGO ── */
+    .logo-wrap {
+      display:flex; flex-direction:column; align-items:center; gap:14px;
+      margin-bottom:28px; text-align:center;
+    }
+    .logo-wrap img {
+      width:86px; height:86px; object-fit:contain; border-radius:20px;
+      filter:drop-shadow(0 8px 28px rgba(2,132,199,0.6));
+    }
+    .logo-name { font-size:28px; font-weight:900; color:white; letter-spacing:3px; }
+    .logo-sub  { font-size:10.5px; color:rgba(255,255,255,0.45); letter-spacing:3px; text-transform:uppercase; margin-top:1px; }
+
+    /* ── TAGLINE ── */
+    .tagline {
+      text-align:center; font-size:15px; color:rgba(255,255,255,0.62);
+      margin-bottom:28px; line-height:1.6; font-weight:400;
     }
 
-    /* ── FLOATING PARTICLES ── */
-    .particles {
-      position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+    /* ── FEATURE CHIPS ── */
+    .chips {
+      display:flex; flex-wrap:wrap; justify-content:center; gap:8px;
+      margin-bottom:32px;
     }
-    .particle {
-      position: absolute; border-radius: 50%;
-      background: rgba(14,165,233,0.035);
-      animation: float var(--dur, 8s) ease-in-out infinite;
-      animation-delay: var(--delay, 0s);
+    .chip {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.13);
+      border-radius:20px; padding:6px 14px;
+      font-size:12px; color:rgba(255,255,255,0.8); font-weight:500;
+      backdrop-filter:blur(8px);
     }
+    .chip-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 
-    /* ── LAYOUT ── */
-    .auth-container {
-      display: flex; width: 100%; max-width: 1280px; margin: 0 auto;
-      min-height: 100vh; position: relative; z-index: 1;
+    /* ── ACCESS BUTTON ── */
+    .access-btn {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; padding:17px 28px; border-radius:16px; border:none;
+      background:linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%);
+      color:white; font-size:16px; font-weight:800; font-family:inherit;
+      cursor:pointer; text-decoration:none;
+      box-shadow:0 8px 36px rgba(2,132,199,0.55), 0 2px 8px rgba(0,0,0,0.3);
+      transition:all 0.22s; letter-spacing:0.3px;
+      margin-bottom:10px;
     }
-
-    /* ── LEFT VISUAL PANEL ── */
-    .auth-visual {
-      flex: 0 0 440px; width: 440px;
-      background: linear-gradient(160deg, rgba(2,132,199,0.18) 0%, rgba(7,89,133,0.28) 100%);
-      border-right: 1px solid rgba(255,255,255,0.08);
-      padding: 44px 38px 36px;
-      display: flex; flex-direction: column; gap: 22px;
-      position: sticky; top: 0; height: 100vh; overflow: hidden;
+    .access-btn:hover {
+      transform:translateY(-3px);
+      box-shadow:0 14px 48px rgba(2,132,199,0.65), 0 4px 12px rgba(0,0,0,0.3);
+      background:linear-gradient(135deg, #0369A1 0%, #0284C7 100%);
     }
+    .access-btn:active { transform:translateY(0); }
+    .access-btn svg { flex-shrink:0; }
 
-    .flag-watermarks { position:absolute; inset:0; overflow:hidden; pointer-events:none; user-select:none; z-index:0; }
-    .flag-watermarks span { position:absolute; display:block; line-height:1; }
+    /* ── DIVIDER ── */
+    .divider {
+      display:flex; align-items:center; gap:10px; margin:18px 0;
+    }
+    .divider hr { flex:1; border:none; border-top:1px solid rgba(255,255,255,0.1); }
+    .divider span { font-size:11px; color:rgba(255,255,255,0.3); white-space:nowrap; }
 
-    /* Africa SVG */
-    .africa-map { position:absolute; bottom:-10px; right:-18px; width:210px; height:260px; pointer-events:none; }
-    .africa-outline { fill:none; stroke:rgba(255,255,255,0.12); stroke-width:1.2; }
-    .conn-line { stroke:rgba(14,165,233,0.45); stroke-width:1; stroke-dasharray:4 3; }
-    @keyframes dashFlow { to { stroke-dashoffset:-28; } }
-    .conn-line { animation: dashFlow 3s linear infinite; }
-    .conn-line:nth-child(2) { animation-delay:-0.6s; }
-    .conn-line:nth-child(3) { animation-delay:-1.2s; }
-    .conn-line:nth-child(4) { animation-delay:-1.8s; }
-    .conn-line:nth-child(5) { animation-delay:-2.4s; }
-    .conn-line:nth-child(6) { animation-delay:-0.9s; }
-    .conn-line:nth-child(7) { animation-delay:-1.5s; }
-    @keyframes dotPulse { 0%,100%{r:3.2;opacity:1;} 50%{r:4.8;opacity:0.6;} }
-    .country-dot { fill:#38BDF8; filter:drop-shadow(0 0 4px rgba(14,165,233,0.9)); }
+    /* ── NETWORK CONFIG ── */
+    .net-toggle {
+      width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px; padding:12px 16px; color:rgba(255,255,255,0.55);
+      font-size:12.5px; font-weight:600; font-family:inherit; cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      transition:background 0.2s;
+    }
+    .net-toggle:hover { background:rgba(255,255,255,0.09); color:rgba(255,255,255,0.8); }
+    .net-toggle span { display:flex; align-items:center; gap:8px; }
+    .net-panel {
+      display:none; margin-top:10px;
+      background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.1);
+      border-radius:14px; padding:18px;
+    }
+    .net-panel.open { display:block; animation:fadeUp 0.25s ease; }
+    .net-panel p { font-size:12px; color:rgba(255,255,255,0.45); margin-bottom:14px; line-height:1.6; }
+    .net-panel p strong { color:rgba(255,255,255,0.7); }
+
+    .ip-input-row { display:flex; gap:8px; margin-bottom:12px; }
+    .ip-input {
+      flex:1; background:var(--input-bg); border:1px solid var(--input-border);
+      border-radius:10px; padding:10px 14px;
+      color:var(--input-text); font-size:13px; font-family:'Inter',monospace;
+      outline:none; transition:border-color 0.2s;
+    }
+    .ip-input:focus { border-color:rgba(14,165,233,0.6); }
+    .ip-input::placeholder { color:rgba(255,255,255,0.3); }
+
+    .ip-apply {
+      background:rgba(2,132,199,0.25); border:1px solid rgba(2,132,199,0.4);
+      color:#38BDF8; border-radius:10px; padding:10px 16px;
+      font-size:13px; font-weight:700; cursor:pointer; font-family:inherit;
+      transition:all 0.2s; white-space:nowrap;
+    }
+    .ip-apply:hover { background:rgba(2,132,199,0.4); }
+
+    .net-steps { display:flex; flex-direction:column; gap:7px; }
+    .net-step { display:flex; align-items:flex-start; gap:10px; font-size:12px; color:rgba(255,255,255,0.55); }
+    .net-step-num {
+      width:20px; height:20px; border-radius:6px; flex-shrink:0;
+      background:rgba(2,132,199,0.2); border:1px solid rgba(2,132,199,0.3);
+      color:#38BDF8; font-size:11px; font-weight:800;
+      display:flex; align-items:center; justify-content:center;
+    }
+    code { background:rgba(255,255,255,0.1); padding:1px 6px; border-radius:4px; font-size:11px; font-family:monospace; color:rgba(255,255,255,0.8); }
+
+    /* ── AFRICA MAP (decorative) ── */
+    .africa-deco { position:fixed; bottom:-20px; right:-30px; width:280px; height:340px; opacity:0.07; pointer-events:none; z-index:0; }
+    .africa-outline { fill:none; stroke:rgba(255,255,255,0.8); stroke-width:1.2; }
+    .conn-line { stroke:rgba(14,165,233,0.8); stroke-width:1; stroke-dasharray:4 3; animation:dashFlow 3s linear infinite; }
+    .conn-line:nth-child(2){animation-delay:-0.6s} .conn-line:nth-child(3){animation-delay:-1.2s}
+    .conn-line:nth-child(4){animation-delay:-1.8s} .conn-line:nth-child(5){animation-delay:-2.4s}
+    .conn-line:nth-child(6){animation-delay:-0.9s} .conn-line:nth-child(7){animation-delay:-1.5s}
+    .country-dot { fill:#38BDF8; }
     .country-dot.d1{animation:dotPulse 2.6s ease-in-out infinite 0.0s;}
     .country-dot.d2{animation:dotPulse 2.6s ease-in-out infinite 0.4s;}
     .country-dot.d3{animation:dotPulse 2.6s ease-in-out infinite 0.8s;}
@@ -136,540 +201,189 @@
     .country-dot.d6{animation:dotPulse 2.6s ease-in-out infinite 2.0s;}
     .country-dot.d7{animation:dotPulse 2.6s ease-in-out infinite 2.4s;}
     .country-dot.d8{animation:dotPulse 2.6s ease-in-out infinite 0.2s;}
-    .country-label { font-size:6.5px; fill:rgba(255,255,255,0.65); font-family:monospace; font-weight:700; letter-spacing:0.5px; }
-    .bg-dot { fill:rgba(255,255,255,0.18); }
 
-    /* Logo */
-    .auth-logo { display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; position:relative; z-index:1; }
-    .auth-logo img { width:90px; height:90px; object-fit:contain; border-radius:22px; filter:drop-shadow(0 8px 24px rgba(2,132,199,0.5)); }
-    .auth-logo-name { font-size:26px; font-weight:900; color:white; letter-spacing:3px; }
-    .auth-logo-sub  { font-size:10px; color:rgba(255,255,255,0.5); letter-spacing:3px; text-transform:uppercase; margin-top:2px; }
+    /* ── FOOTER NOTE ── */
+    .footer-note { text-align:center; margin-top:22px; font-size:11.5px; color:rgba(255,255,255,0.25); }
+    .footer-note a { color:rgba(255,255,255,0.4); text-decoration:none; }
+    .footer-note a:hover { color:rgba(255,255,255,0.7); }
 
-    /* Desk photo with gradient mask */
-    .auth-img-masked {
-      margin: 0 -38px; flex: 0 0 170px; position:relative; z-index:1;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 76%, transparent 100%);
-      mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 76%, transparent 100%);
+    /* live indicator */
+    .live-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25);
+      border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700;
+      color:#10B981; margin-bottom:18px;
     }
-    .auth-img-masked img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; border-radius:16px; opacity:0.88; }
-    .auth-img-masked .img-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(7,89,133,0.65) 0%,transparent 55%); border-radius:16px; }
+    .live-dot { width:7px; height:7px; border-radius:50%; background:#10B981; animation:livePulse 1.8s infinite; flex-shrink:0; }
 
-    /* Glass feature card */
-    .feature-card-glass {
-      background: rgba(255,255,255,0.07);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 14px; padding: 16px 18px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.08);
-      position: relative; z-index: 1;
-    }
-    .feature-row { display:flex; align-items:center; gap:10px; font-size:12.5px; color:rgba(255,255,255,0.92); }
-    .feature-icon-sm {
-      width:26px; height:26px; border-radius:7px;
-      background:rgba(255,255,255,0.13);
-      display:flex; align-items:center; justify-content:center;
-      font-size:13px; flex-shrink:0;
-    }
-
-    /* Country chips scroll */
-    .chips-scroll-wrap { overflow:hidden; position:relative; z-index:1; }
-    .chips-scroll-track { display:flex; gap:7px; width:max-content; animation:chipsScroll 22s linear infinite; }
-    .chips-scroll-track:hover { animation-play-state:paused; }
-    @keyframes chipsScroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
-    .auth-country-badge {
-      display:inline-flex; align-items:center; gap:5px;
-      background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
-      border-radius:20px; padding:4px 12px;
-      font-size:11.5px; color:rgba(255,255,255,0.82); white-space:nowrap; font-weight:500;
-    }
-    .chips-label { font-size:10px; color:rgba(255,255,255,0.38); margin-bottom:8px; letter-spacing:1.5px; text-transform:uppercase; position:relative; z-index:1; }
-
-    /* ── RIGHT CONTENT PANEL ── */
-    .auth-form-side {
-      flex: 1; min-width: 0;
-      background: var(--bg-card);
-      padding: 48px 56px;
-      display: flex; flex-direction: column;
-      overflow-y: auto; position: relative;
-      transition: background 0.3s;
-    }
-
-    .form-watermarks { position:absolute; inset:0; overflow:hidden; pointer-events:none; user-select:none; }
-    .form-watermarks span { position:absolute; display:block; line-height:1; }
-
-    /* Top strip */
-    .auth-top-strip {
-      display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:8px;
-      margin-bottom:32px; padding-bottom:18px;
-      border-bottom: 1px solid var(--divider);
-      position:relative; z-index:1;
-    }
-    .ssl-badge {
-      display:flex; align-items:center; gap:7px;
-      font-size:11px; font-weight:700; color:#0369A1;
-      background:rgba(2,132,199,0.07); padding:6px 12px;
-      border-radius:20px; border:1px solid rgba(2,132,199,0.18);
-    }
-    [data-theme="dark"] .ssl-badge { color:#38BDF8; background:rgba(14,165,233,0.10); border-color:rgba(14,165,233,0.25); }
-
-    .theme-btn {
-      background:none; border:1px solid var(--border); border-radius:8px;
-      padding:6px 10px; font-size:16px; cursor:pointer;
-      transition:background 0.2s; color:var(--text-primary);
-    }
-    .theme-btn:hover { background:var(--bg-input); }
-
-    /* Title */
-    .page-title { font-size: clamp(22px, 3vw, 30px); font-weight: 900; color: var(--text-primary); margin-bottom: 6px; position:relative; z-index:1; line-height:1.15; }
-    .page-sub   { font-size:14.5px; color:var(--text-secondary); margin-bottom:32px; position:relative; z-index:1; }
-
-    /* Stats */
-    .stat-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:32px; position:relative; z-index:1; }
-    .stat-box {
-      flex:1; min-width:110px;
-      background: var(--bg-input); border:1px solid var(--border);
-      border-radius:12px; padding:14px 16px; text-align:center;
-      transition:border-color 0.2s, box-shadow 0.2s;
-    }
-    .stat-box:hover { border-color:var(--sky-light); box-shadow:0 4px 20px rgba(2,132,199,0.12); }
-    .stat-val { font-size:20px; font-weight:900; color:var(--sky-primary); line-height:1; }
-    .stat-lbl { font-size:11px; color:var(--text-muted); margin-top:4px; font-weight:500; }
-
-    /* Features grid */
-    .features-grid {
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:12px;
-      margin-bottom:32px; position:relative; z-index:1;
-    }
-    .fcard {
-      background:var(--bg-input); border:1px solid var(--border); border-radius:14px;
-      padding:18px 16px; transition:border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    }
-    .fcard:hover { border-color:var(--sky-light); transform:translateY(-3px); box-shadow:0 8px 24px rgba(2,132,199,0.1); }
-    .fcard-icon { font-size:20px; margin-bottom:8px; }
-    .fcard h3 { font-size:13.5px; font-weight:800; color:var(--text-primary); margin-bottom:5px; }
-    .fcard p  { font-size:12px; color:var(--text-muted); line-height:1.6; }
-
-    /* Steps */
-    .steps-row {
-      display:flex; gap:0; overflow-x:auto; margin-bottom:32px; position:relative; z-index:1; padding-bottom:4px;
-    }
-    .step { flex:0 0 auto; width:190px; text-align:center; padding:0 10px; position:relative; }
-    .step::after { content:'→'; position:absolute; right:-6px; top:20px; color:var(--text-muted); font-size:16px; }
-    .step:last-child::after { display:none; }
-    .step-num {
-      width:42px; height:42px; border-radius:12px;
-      background:linear-gradient(135deg, var(--sky-primary), var(--sky-secondary));
-      color:white; font-weight:900; font-size:16px;
-      display:flex; align-items:center; justify-content:center;
-      margin:0 auto 10px; box-shadow:0 6px 20px rgba(2,132,199,0.35);
-    }
-    .step h4 { font-size:12.5px; font-weight:800; color:var(--text-primary); margin-bottom:4px; }
-    .step p  { font-size:11.5px; color:var(--text-muted); line-height:1.5; }
-
-    /* Tech pills */
-    .tech-pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px; position:relative; z-index:1; }
-    .pill {
-      display:flex; align-items:center; gap:6px;
-      background:var(--bg-input); border:1px solid var(--border);
-      border-radius:8px; padding:5px 12px;
-      font-size:11.5px; font-weight:700; color:var(--text-secondary);
-    }
-    .pill-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-
-    /* Team */
-    .team-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px; position:relative; z-index:1; }
-    .team-card {
-      display:flex; align-items:center; gap:14px;
-      background:var(--bg-input); border:1px solid var(--border); border-radius:14px;
-      padding:14px 16px; flex:1; min-width:200px;
-      transition:border-color 0.2s;
-    }
-    .team-card:hover { border-color:var(--sky-light); }
-    .team-photo {
-      width:52px; height:52px; border-radius:12px; overflow:hidden; flex-shrink:0;
-      background:linear-gradient(135deg, #0F172A, #0F3460);
-      display:flex; align-items:flex-end; justify-content:center;
-    }
-    .team-photo img { max-height:100%; object-fit:contain; }
-    .team-name  { font-size:14px; font-weight:800; color:var(--text-primary); }
-    .team-role  { font-size:11px; font-weight:700; color:var(--sky-primary); margin-top:2px; }
-
-    /* CTA */
-    .cta-block {
-      background:linear-gradient(135deg, #0F172A 0%, #0F3460 100%);
-      border-radius:16px; padding:24px 28px; display:flex;
-      align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
-      position:relative; z-index:1; margin-bottom:10px;
-    }
-    .cta-text h3 { font-size:16px; font-weight:900; color:white; margin-bottom:4px; }
-    .cta-text p  { font-size:12.5px; color:rgba(255,255,255,0.5); }
-    .cta-btn {
-      background:var(--sky-primary); color:white;
-      padding:11px 22px; border-radius:10px; font-size:13.5px; font-weight:700;
-      display:inline-flex; align-items:center; gap:8px;
-      transition:all 0.2s; box-shadow:0 6px 20px rgba(2,132,199,0.4); flex-shrink:0;
-    }
-    .cta-btn:hover { background:var(--sky-dark); transform:translateY(-2px); }
-
-    /* Section heading */
-    .sh { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--sky-primary); margin-bottom:10px; position:relative; z-index:1; }
-
-    /* Footer strip */
-    .page-footer {
-      margin-top:auto; padding-top:20px; border-top:1px solid var(--divider);
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
-      position:relative; z-index:1;
-    }
-    .page-footer p { font-size:12px; color:var(--text-muted); }
-    .page-footer a { color:var(--sky-primary); font-weight:600; }
-
-    /* ── SIGN IN BUTTON ── */
-    .signin-btn {
-      display: inline-flex; align-items: center; gap: 9px;
-      background: linear-gradient(135deg, var(--sky-primary), var(--sky-secondary));
-      color: white; padding: 11px 24px; border-radius: 12px;
-      font-size: 14px; font-weight: 800; letter-spacing: 0.3px;
-      box-shadow: 0 6px 24px rgba(2,132,199,0.45);
-      transition: all 0.2s; border: none; cursor: pointer; text-decoration: none;
-      white-space: nowrap;
-    }
-    .signin-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 36px rgba(2,132,199,0.55);
-      background: linear-gradient(135deg, var(--sky-dark), var(--sky-primary));
-    }
-    .signin-btn svg { flex-shrink: 0; }
-
-    /* Hero CTA banner */
-    .hero-access {
-      background: linear-gradient(135deg, #0F172A 0%, #0c2d5e 60%, #075985 100%);
-      border: 1px solid rgba(14,165,233,0.25);
-      border-radius: 18px; padding: 28px 32px;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 18px;
-      position: relative; z-index: 1; margin-bottom: 28px;
-      box-shadow: 0 8px 40px rgba(2,132,199,0.18);
-    }
-    .hero-access-text { flex: 1; min-width: 200px; }
-    .hero-access-text h3 {
-      font-size: 18px; font-weight: 900; color: white; margin-bottom: 6px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .hero-access-text p { font-size: 13px; color: rgba(255,255,255,0.55); }
-    .live-dot {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
-      border-radius: 20px; padding: 3px 10px;
-      font-size: 11px; font-weight: 700; color: #10B981;
-    }
-    .live-dot::before {
-      content: ''; width: 7px; height: 7px; border-radius: 50%;
-      background: #10B981; animation: livePulse 1.8s infinite;
-    }
-    @keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
-
-    .signin-large {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: linear-gradient(135deg, var(--sky-primary), var(--sky-secondary));
-      color: white; padding: 14px 30px; border-radius: 12px;
-      font-size: 15px; font-weight: 800;
-      box-shadow: 0 8px 30px rgba(2,132,199,0.5);
-      transition: all 0.2s; flex-shrink: 0;
-    }
-    .signin-large:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(2,132,199,0.6);
-      background: linear-gradient(135deg, var(--sky-dark), var(--sky-primary));
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width:1024px) {
-      .auth-visual { display:none; }
-      .auth-form-side { padding:32px 28px; }
-    }
-    @media (max-width:640px) {
-      .auth-form-side { padding:20px 16px; }
-      .steps-row { gap:0; }
-      .step { width:155px; }
-      .hero-access { padding: 20px; }
-      .hero-access-text h3 { font-size: 15px; }
-      .signin-large { width: 100%; justify-content: center; }
+    @media (max-width:480px) {
+      .card { padding:32px 22px 28px; border-radius:22px; }
+      .logo-wrap img { width:70px; height:70px; }
+      .logo-name { font-size:22px; }
+      .access-btn { font-size:14px; padding:15px 20px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Floating background particles -->
-<div class="particles" aria-hidden="true">
-  <div class="particle" style="width:280px;height:280px;top:5%;left:8%;--dur:9s;--delay:0s;"></div>
-  <div class="particle" style="width:200px;height:200px;top:60%;left:72%;--dur:12s;--delay:-3s;"></div>
-  <div class="particle" style="width:340px;height:340px;top:30%;left:45%;--dur:15s;--delay:-6s;"></div>
-  <div class="particle" style="width:180px;height:180px;top:80%;left:20%;--dur:10s;--delay:-2s;"></div>
-  <div style="position:absolute;top:3%;left:2%;animation:float 16s ease-in-out infinite;">
-    <span style="display:block;font-size:220px;opacity:0.018;transform:rotate(-12deg);line-height:1;filter:grayscale(40%);">🌍</span>
-  </div>
-  <div style="position:absolute;bottom:4%;right:3%;animation:float 13s ease-in-out infinite 5s;">
-    <span style="display:block;font-size:190px;opacity:0.015;transform:rotate(16deg);line-height:1;filter:grayscale(40%);">🌍</span>
-  </div>
+<!-- Background decorations -->
+<div class="bg-deco" aria-hidden="true">
+  <span style="top:3%;left:2%;font-size:200px;opacity:0.018;transform:rotate(-12deg);animation:float 16s ease-in-out infinite;">🌍</span>
+  <span style="bottom:4%;right:22%;font-size:170px;opacity:0.015;transform:rotate(16deg);animation:float 13s ease-in-out infinite 5s;">🌍</span>
+  <span style="top:18%;right:3%;font-size:90px;opacity:0.06;transform:rotate(18deg);">🇨🇩</span>
+  <span style="bottom:20%;left:2%;font-size:80px;opacity:0.05;transform:rotate(-17deg);animation:float 9s ease-in-out infinite 1.5s;">🇰🇪</span>
 </div>
 
-<div class="auth-page">
-  <div class="auth-container">
+<!-- Africa map decorative -->
+<svg class="africa-deco" viewBox="0 0 200 248" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path class="africa-outline" d="M 82,10 C 96,4 118,5 136,13 C 152,20 163,36 166,55 C 169,72 167,90 164,108 C 161,124 157,138 153,152 C 150,165 146,178 141,191 C 135,207 124,222 112,233 C 104,241 92,245 80,239 C 68,233 59,218 52,202 C 45,187 40,171 38,155 C 36,138 35,122 36,106 C 37,88 42,72 48,58 C 54,44 62,31 70,21 C 75,14 79,11 82,10 Z"/>
+  <line class="conn-line" x1="88" y1="148" x2="122" y2="182"/>
+  <line class="conn-line" x1="122" y1="182" x2="132" y2="196"/>
+  <line class="conn-line" x1="132" y1="196" x2="120" y2="220"/>
+  <line class="conn-line" x1="120" y1="220" x2="90"  y2="208"/>
+  <line class="conn-line" x1="122" y1="182" x2="140" y2="178"/>
+  <line class="conn-line" x1="140" y1="178" x2="152" y2="150"/>
+  <line class="conn-line" x1="152" y1="150" x2="155" y2="130"/>
+  <circle class="country-dot d1" cx="88"  cy="148" r="3.2"/>
+  <circle class="country-dot d2" cx="122" cy="182" r="3.2"/>
+  <circle class="country-dot d3" cx="152" cy="150" r="3.2"/>
+  <circle class="country-dot d4" cx="155" cy="130" r="3.2"/>
+  <circle class="country-dot d5" cx="140" cy="178" r="3.2"/>
+  <circle class="country-dot d6" cx="132" cy="196" r="3.2"/>
+  <circle class="country-dot d7" cx="120" cy="220" r="3.2"/>
+  <circle class="country-dot d8" cx="90"  cy="208" r="3.2"/>
+</svg>
 
-    <!-- ══════════ LEFT VISUAL ══════════ -->
-    <div class="auth-visual">
+<!-- Main card -->
+<div class="card">
+  <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Changer le thème">🌙</button>
 
-      <!-- Flag watermarks -->
-      <div class="flag-watermarks" aria-hidden="true">
-        <span style="top:2%;right:-2%;font-size:112px;opacity:0.08;transform:rotate(18deg);">🇨🇩</span>
-        <span style="top:43%;right:0%;font-size:98px;opacity:0.06;transform:rotate(9deg);">🇰🇪</span>
-        <span style="top:28%;left:18%;font-size:66px;opacity:0.04;transform:rotate(-42deg);">🇲🇼</span>
-        <span style="top:16%;left:-4%;font-size:84px;opacity:0.05;transform:rotate(-26deg);animation:float 7s ease-in-out infinite;">🇿🇲</span>
-        <span style="top:61%;left:2%;font-size:80px;opacity:0.05;transform:rotate(-17deg);animation:float 9s ease-in-out infinite 1.5s;">🇹🇿</span>
-      </div>
+  <!-- Logo -->
+  <div class="logo-wrap">
+    <img src="./assets/images/logo.png" alt="BlueSky Logo">
+    <div>
+      <div class="logo-name">BLUESKY</div>
+      <div class="logo-sub">Transactions</div>
+    </div>
+  </div>
 
-      <!-- Africa network map SVG -->
-      <svg class="africa-map" viewBox="0 0 200 248" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="africa-outline" d="M 82,10 C 96,4 118,5 136,13 C 152,20 163,36 166,55 C 169,72 167,90 164,108 C 161,124 157,138 153,152 C 150,165 146,178 141,191 C 135,207 124,222 112,233 C 104,241 92,245 80,239 C 68,233 59,218 52,202 C 45,187 40,171 38,155 C 36,138 35,122 36,106 C 37,88 42,72 48,58 C 54,44 62,31 70,21 C 75,14 79,11 82,10 Z"/>
-        <circle class="bg-dot" cx="58"  cy="64"  r="1"/>
-        <circle class="bg-dot" cx="140" cy="72"  r="1"/>
-        <circle class="bg-dot" cx="72"  cy="112" r="1"/>
-        <circle class="bg-dot" cx="155" cy="96"  r="1"/>
-        <circle class="bg-dot" cx="95"  cy="170" r="1"/>
-        <circle class="bg-dot" cx="50"  cy="140" r="1"/>
-        <circle class="bg-dot" cx="160" cy="138" r="1"/>
-        <circle class="bg-dot" cx="110" cy="100" r="1"/>
-        <line class="conn-line" x1="88" y1="148" x2="122" y2="182"/>
-        <line class="conn-line" x1="122" y1="182" x2="132" y2="196"/>
-        <line class="conn-line" x1="132" y1="196" x2="120" y2="220"/>
-        <line class="conn-line" x1="120" y1="220" x2="90"  y2="208"/>
-        <line class="conn-line" x1="122" y1="182" x2="140" y2="178"/>
-        <line class="conn-line" x1="140" y1="178" x2="152" y2="150"/>
-        <line class="conn-line" x1="152" y1="150" x2="155" y2="130"/>
-        <circle class="country-dot d1" cx="88"  cy="148" r="3.2"/>
-        <circle class="country-dot d2" cx="122" cy="182" r="3.2"/>
-        <circle class="country-dot d3" cx="152" cy="150" r="3.2"/>
-        <circle class="country-dot d4" cx="155" cy="130" r="3.2"/>
-        <circle class="country-dot d5" cx="140" cy="178" r="3.2"/>
-        <circle class="country-dot d6" cx="132" cy="196" r="3.2"/>
-        <circle class="country-dot d7" cx="120" cy="220" r="3.2"/>
-        <circle class="country-dot d8" cx="90"  cy="208" r="3.2"/>
-        <text class="country-label" x="74"  y="146">CD</text>
-        <text class="country-label" x="125" y="180">ZM</text>
-        <text class="country-label" x="155" y="148">TZ</text>
-        <text class="country-label" x="158" y="128">KE</text>
-        <text class="country-label" x="143" y="176">MW</text>
-        <text class="country-label" x="135" y="194">ZW</text>
-        <text class="country-label" x="106" y="231">ZA</text>
-        <text class="country-label" x="76"  y="220">NA</text>
-      </svg>
+  <!-- Live badge -->
+  <div style="display:flex;justify-content:center;margin-bottom:16px;">
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      Système opérationnel
+    </div>
+  </div>
 
-      <!-- Logo -->
-      <div class="auth-logo">
-        <img src="./assets/images/logo.png" alt="BlueSky Logo">
-        <div>
-          <div class="auth-logo-name">BLUESKY</div>
-          <div class="auth-logo-sub">TRANSACTIONS</div>
-        </div>
-      </div>
+  <!-- Tagline -->
+  <p class="tagline">
+    Gestion de transferts d'argent<br>en Afrique subsaharienne.
+  </p>
 
-      <!-- Desk photo with gradient mask -->
-      <div class="auth-img-masked">
-        <img src="./assets/images/blog-2.jpg" alt="Agent at work">
-        <div class="img-overlay"></div>
-      </div>
+  <!-- Feature chips -->
+  <div class="chips">
+    <span class="chip"><span class="chip-dot" style="background:#38BDF8;"></span>Transactions</span>
+    <span class="chip"><span class="chip-dot" style="background:#10B981;"></span>8+ Pays</span>
+    <span class="chip"><span class="chip-dot" style="background:#F59E0B;"></span>Agents</span>
+    <span class="chip"><span class="chip-dot" style="background:#A78BFA;"></span>Rapports</span>
+  </div>
 
-      <!-- Feature glass card -->
-      <div class="feature-card-glass">
-        <div style="display:flex;flex-direction:column;gap:9px;">
-          <div class="feature-row"><span class="feature-icon-sm">📋</span> Transaction recording — Send &amp; Withdrawals</div>
-          <div class="feature-row"><span class="feature-icon-sm">⚡</span> Real-time dashboard updates</div>
-          <div class="feature-row"><span class="feature-icon-sm">📊</span> Charts, exports &amp; reports</div>
-          <div class="feature-row"><span class="feature-icon-sm">🌍</span> 8+ African countries covered</div>
-          <div class="feature-row"><span class="feature-icon-sm">🛡️</span> Role-based secure access</div>
-        </div>
-      </div>
+  <!-- ACCESS BUTTON -->
+  <a href="#" id="accessBtn" class="access-btn">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+    </svg>
+    Accéder au système
+  </a>
 
-      <!-- Country chips infinite scroll -->
-      <div>
-        <div class="chips-label">Countries covered</div>
-        <div class="chips-scroll-wrap">
-          <div class="chips-scroll-track" id="chipsTrack"></div>
-        </div>
-      </div>
+  <div class="divider">
+    <hr><span>Autre appareil ou téléphone ?</span><hr>
+  </div>
+
+  <!-- Network toggle -->
+  <button class="net-toggle" onclick="togglePanel()" id="netToggle">
+    <span>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.6;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Configurer l'adresse réseau
+    </span>
+    <svg id="chevron" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform 0.2s;opacity:.5;"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+
+  <div class="net-panel" id="netPanel">
+    <p>
+      Pour accéder depuis ton <strong>téléphone ou un autre PC</strong>, lance le serveur avec <code>START_BLUESKY.bat</code> — l'IP réseau s'affiche dans la console.<br><br>
+      Tape cette IP ci-dessous, puis clique <strong>Appliquer</strong>.
+    </p>
+
+    <div class="ip-input-row">
+      <input class="ip-input" id="ipInput" type="text" placeholder="ex: 192.168.1.45" spellcheck="false" autocomplete="off">
+      <button class="ip-apply" onclick="applyIP()">Appliquer</button>
     </div>
 
-    <!-- ══════════ RIGHT CONTENT ══════════ -->
-    <div class="auth-form-side">
-
-      <!-- Watermarks -->
-      <div class="form-watermarks" aria-hidden="true">
-        <span style="top:-18px;right:-22px;font-size:155px;opacity:0.032;transform:rotate(22deg);">🌍</span>
-        <span style="bottom:-22px;left:-22px;font-size:138px;opacity:0.032;transform:rotate(-14deg);">🇨🇩</span>
-        <span style="top:38%;right:-16px;font-size:96px;opacity:0.022;transform:rotate(30deg);">🇰🇪</span>
+    <div class="net-steps">
+      <div class="net-step">
+        <span class="net-step-num">1</span>
+        <span>Lance <code>START_BLUESKY.bat</code> — note l'IP affichée sous "Network:"</span>
       </div>
-
-      <!-- Top strip -->
-      <div class="auth-top-strip">
-        <div class="ssl-badge">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Open Source · MIT License
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <a href="http://localhost:8000/login" class="signin-btn">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
-            Sign In
-          </a>
-          <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-        </div>
+      <div class="net-step">
+        <span class="net-step-num">2</span>
+        <span>Connecte ton téléphone au <strong>même WiFi</strong> que ce PC</span>
       </div>
-
-      <!-- Title -->
-      <div class="page-title">Money Transfer Management 🌍</div>
-      <div class="page-sub">A complete system for recording, tracking, and reporting money transfers across Sub-Saharan Africa.</div>
-
-      <!-- Stats -->
-      <div class="stat-row">
-        <div class="stat-box"><div class="stat-val">8+</div><div class="stat-lbl">Countries</div></div>
-        <div class="stat-box"><div class="stat-val">2</div><div class="stat-lbl">User Roles</div></div>
-        <div class="stat-box"><div class="stat-val">Laravel 12</div><div class="stat-lbl">Backend</div></div>
-        <div class="stat-box"><div class="stat-val">100%</div><div class="stat-lbl">Open Source</div></div>
-      </div>
-
-      <!-- ACCESS SYSTEM BANNER -->
-      <div class="hero-access">
-        <div class="hero-access-text">
-          <h3>
-            BLUESKY Transactions
-            <span class="live-dot">Système actif</span>
-          </h3>
-          <p>Connectez-vous pour accéder au tableau de bord, enregistrer des transactions et consulter les rapports.</p>
-        </div>
-        <a href="http://localhost:8000/login" class="signin-large">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
-          Accéder au système →
-        </a>
-      </div>
-
-      <!-- Features -->
-      <div class="sh">Core Features</div>
-      <div class="features-grid">
-        <div class="fcard">
-          <div class="fcard-icon">💸</div>
-          <h3>Transaction Recording</h3>
-          <p>Log Send and Withdrawal operations with full sender, receiver, amount, fees, route and status details.</p>
-        </div>
-        <div class="fcard">
-          <div class="fcard-icon">👥</div>
-          <h3>Agent Management</h3>
-          <p>Create and monitor agents. Each has a unique code, country assignment and their own secure dashboard.</p>
-        </div>
-        <div class="fcard">
-          <div class="fcard-icon">📊</div>
-          <h3>Statistics &amp; Charts</h3>
-          <p>Interactive Chart.js dashboards — monthly volumes, country breakdowns, and completion rates.</p>
-        </div>
-        <div class="fcard">
-          <div class="fcard-icon">📤</div>
-          <h3>CSV Export</h3>
-          <p>Download full transaction history as CSV — complete export for admins, personal for each agent.</p>
-        </div>
-      </div>
-
-      <!-- How it works -->
-      <div class="sh">How It Works</div>
-      <div class="steps-row">
-        <div class="step">
-          <div class="step-num">1</div>
-          <h4>Install &amp; Configure</h4>
-          <p>Clone repo, run migrations with START_BLUESKY.bat</p>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <h4>Log In as Admin</h4>
-          <p>Use the seeded admin account to manage the system</p>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <h4>Create Agents</h4>
-          <p>Add agents per country with commission rates</p>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <h4>Record Transfers</h4>
-          <p>Agents log transactions; admin sees real-time stats</p>
-        </div>
-      </div>
-
-      <!-- Tech stack -->
-      <div class="sh">Tech Stack</div>
-      <div class="tech-pills">
-        <div class="pill"><span class="pill-dot" style="background:#EF4444;"></span>Laravel 12</div>
-        <div class="pill"><span class="pill-dot" style="background:#6366F1;"></span>PHP 8.2+</div>
-        <div class="pill"><span class="pill-dot" style="background:#0284C7;"></span>MySQL</div>
-        <div class="pill"><span class="pill-dot" style="background:#06B6D4;"></span>Tailwind CSS 4</div>
-        <div class="pill"><span class="pill-dot" style="background:#F59E0B;"></span>Vite 7</div>
-        <div class="pill"><span class="pill-dot" style="background:#10B981;"></span>Chart.js 4</div>
-        <div class="pill"><span class="pill-dot" style="background:#8B5CF6;"></span>Blade</div>
-      </div>
-
-      <!-- Team -->
-      <div class="sh">The Team</div>
-      <div class="team-row">
-        <div class="team-card">
-          <div class="team-photo">
-            <img src="./assets/images/WhatsApp_Image_2026-01-27_at_11.11.59_PM-removebg-preview.png" alt="Pascal Mutaka">
-          </div>
-          <div>
-            <div class="team-name">Pascal Mutaka</div>
-            <div class="team-role">Lead Developer</div>
-          </div>
-        </div>
-        <div class="team-card">
-          <div class="team-photo">
-            <img src="./assets/images/WhatsApp_Image_2026-01-27_at_11.11.59_PM__1_-removebg-preview.png" alt="Co-Developer">
-          </div>
-          <div>
-            <div class="team-name">Co-Developer</div>
-            <div class="team-role" style="color:#10B981;">Developer</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="cta-block" style="flex-direction:column;align-items:stretch;gap:14px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
-          <div class="cta-text">
-            <h3>Prêt à utiliser le système ?</h3>
-            <p>Connectez-vous pour enregistrer des transactions et accéder aux statistiques.</p>
-          </div>
-          <a href="http://localhost:8000/login" class="cta-btn" style="background:linear-gradient(135deg,#0284C7,#0EA5E9);box-shadow:0 8px 30px rgba(2,132,199,0.5);">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
-            Se connecter →
-          </a>
-        </div>
-        <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <span style="font-size:12px;color:rgba(255,255,255,0.35);">Code source disponible sur GitHub</span>
-          <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank" class="cta-btn" style="padding:8px 16px;font-size:12px;background:rgba(255,255,255,0.08);box-shadow:none;border:1px solid rgba(255,255,255,0.15);">
-            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="page-footer">
-        <p>&copy; 2026 <a href="https://github.com/PascalMTK" target="_blank">PascalMTK</a>. All Rights Reserved.</p>
-        <p>Laravel 12 · MySQL · Tailwind CSS 4</p>
+      <div class="net-step">
+        <span class="net-step-num">3</span>
+        <span>Tape l'IP réseau ci-dessus, clique Appliquer, puis clique le bouton bleu</span>
       </div>
     </div>
+  </div>
 
+  <div class="footer-note">
+    &copy; 2026 PascalMTK &nbsp;·&nbsp;
+    <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank">GitHub</a>
+    &nbsp;·&nbsp; Laravel 12
   </div>
 </div>
 
 <script>
-  // Theme toggle
+  const DEFAULT_URL = 'http://localhost:8000/login';
+  const STORAGE_KEY = 'bluesky-server-url';
+
+  // Init access button URL
+  function initBtn() {
+    const saved = localStorage.getItem(STORAGE_KEY) || DEFAULT_URL;
+    document.getElementById('accessBtn').href = saved;
+    // Show saved IP in input if it's not localhost
+    if (saved !== DEFAULT_URL) {
+      const match = saved.match(/http:\/\/([\d.]+):/);
+      if (match) document.getElementById('ipInput').value = match[1];
+    }
+  }
+
+  function applyIP() {
+    const raw = document.getElementById('ipInput').value.trim();
+    if (!raw) { alert('Entre une adresse IP.'); return; }
+    const ip = raw.replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace(/:.*$/, '');
+    if (!/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) { alert('Adresse IP invalide. Ex: 192.168.1.45'); return; }
+    const url = `http://${ip}:8000/login`;
+    localStorage.setItem(STORAGE_KEY, url);
+    const btn = document.getElementById('accessBtn');
+    btn.href = url;
+    // Feedback
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ &nbsp;Adresse sauvegardée — ' + ip;
+    btn.style.background = 'linear-gradient(135deg,#059669,#10B981)';
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.style.background = '';
+    }, 2500);
+  }
+
+  function togglePanel() {
+    const panel   = document.getElementById('netPanel');
+    const chevron = document.getElementById('chevron');
+    const open = panel.classList.toggle('open');
+    chevron.style.transform = open ? 'rotate(180deg)' : '';
+  }
+
   function toggleTheme() {
     const html = document.documentElement;
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -677,28 +391,19 @@
     localStorage.setItem('bluesky-theme', next);
     document.getElementById('themeBtn').textContent = next === 'dark' ? '☀️' : '🌙';
   }
-  // Sync icon on load
+  // Sync icon
   (function(){
     const t = document.documentElement.getAttribute('data-theme') || 'light';
     const btn = document.getElementById('themeBtn');
     if (btn) btn.textContent = t === 'dark' ? '☀️' : '🌙';
   })();
 
-  // Country chips
-  const countries = [
-    ['🇨🇩','DR Congo'],['🇿🇲','Zambia'],['🇹🇿','Tanzania'],['🇰🇪','Kenya'],
-    ['🇲🇼','Malawi'],['🇿🇼','Zimbabwe'],['🇿🇦','South Africa'],['🇳🇦','Namibia'],
-    ['🇨🇲','Cameroon'],['🇸🇳','Senegal'],['🇨🇮','Ivory Coast'],['🇲🇱','Mali'],
-    ['🇬🇳','Guinea'],['🇨🇬','Congo'],['🇳🇬','Nigeria'],['🇬🇭','Ghana'],
-    ['🇷🇼','Rwanda'],['🇺🇬','Uganda'],['🇪🇹','Ethiopia'],['🇦🇴','Angola'],
-  ];
-  const track = document.getElementById('chipsTrack');
-  [...countries, ...countries].forEach(([flag, name]) => {
-    const span = document.createElement('span');
-    span.className = 'auth-country-badge';
-    span.textContent = flag + ' ' + name;
-    track.appendChild(span);
+  // Allow pressing Enter in IP input
+  document.getElementById('ipInput').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') applyIP();
   });
+
+  initBtn();
 </script>
 </body>
 </html>

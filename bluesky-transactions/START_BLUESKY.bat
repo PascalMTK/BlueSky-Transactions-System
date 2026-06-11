@@ -41,12 +41,27 @@ IF EXIST "public\storage" (
 php artisan storage:link
 echo  [OK] Caches cleared and storage linked
 
-echo  [5/5] Starting development server...
+:: Get local network IP address
+echo  [5/5] Starting server on all network interfaces...
 echo.
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /i "IPv4" ^| findstr /v "127.0.0.1"') do (
+    set RAW_IP=%%a
+)
+:: Trim leading space from IP
+set LOCAL_IP=%RAW_IP: =%
+
 echo  ======================================
 echo   Application available at:
-echo   http://localhost:8000
 echo.
-echo  
+echo   Local  : http://localhost:8000
+if defined LOCAL_IP (
+    echo   Network: http://%LOCAL_IP%:8000
+    echo.
+    echo   Acces depuis telephone / autre appareil:
+    echo   Connecte-toi au meme WiFi puis ouvre:
+    echo   http://%LOCAL_IP%:8000
+)
+echo  ======================================
+echo.
 start http://localhost:8000
-php artisan serve
+php artisan serve --host=0.0.0.0 --port=8000
