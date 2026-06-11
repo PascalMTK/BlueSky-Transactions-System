@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLUESKY Transactions — Money Transfer Management System</title>
+
+  <link rel="shortcut icon" href="./assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Source+Sans+Pro:wght@600;700&display=swap" rel="stylesheet">
+</head>
+
+<body id="top">
+
+  <!-- HEADER -->
+  <header class="header" data-header>
+    <div class="container">
+
+      <div class="overlay" data-overlay></div>
+
+      <a href="#" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+        <img src="./assets/images/logo.png" alt="BlueSky Logo" width="38" height="38" style="border-radius:8px;">
+        <h1 class="logo">BLUESKY</h1>
+      </a>
+
+      <nav class="navbar" data-navbar>
+        <div class="navbar-top">
+          <a href="#" class="logo">BLUESKY</a>
+          <button class="nav-close-btn" aria-label="Close Menu" data-nav-close-btn>
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+
+        <ul class="navbar-list">
+          <li class="navbar-item">
+            <a href="#home" class="navbar-link" data-navbar-link>Home</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#about" class="navbar-link" data-navbar-link>About</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#services" class="navbar-link" data-navbar-link>Features</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#features" class="navbar-link" data-navbar-link>How It Works</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#team" class="navbar-link" data-navbar-link>Team</a>
+          </li>
+          <li class="navbar-item">
+            <a href="#contact" class="navbar-link" data-navbar-link>Contact</a>
+          </li>
+        </ul>
+      </nav>
+
+      <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank" class="btn">
+        <ion-icon name="logo-github" aria-hidden="true"></ion-icon>
+        <span>View on GitHub</span>
+      </a>
+
+      <button class="nav-open-btn" aria-label="Open Menu" data-nav-open-btn>
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- HERO -->
+      <section class="hero" id="home">
+        <div class="container">
+
+          <div class="hero-content">
+            <p class="hero-subtitle">Money Transfer Management — Sub-Saharan Africa</p>
+            <h2 class="h2 hero-title">Manage Every Transfer, Everywhere in Africa</h2>
+            <p class="hero-text">
+              BLUESKY Transactions is a complete web platform for recording, tracking, and reporting
+              money transfers across multiple African countries — built for agents and administrators.
+            </p>
+            <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank" class="btn">
+              Get Started
+            </a>
+          </div>
+
+          <figure class="hero-banner">
+            <img src="./assets/images/hero-banner.png" width="694" height="529" loading="lazy" alt="BlueSky Dashboard"
+              class="w-100 banner-animation">
+          </figure>
+
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="section about" id="about">
+        <div class="container">
+
+          <figure class="about-banner">
+            <img src="./assets/images/about-banner.png" width="700" height="532" loading="lazy" alt="About BlueSky"
+              class="w-100 banner-animation">
+          </figure>
+
+          <div class="about-content">
+            <h2 class="h2 section-title underline">Why BLUESKY?</h2>
+
+            <p class="about-text">
+              BLUESKY Transactions was born from the need for a reliable, centralized platform to manage
+              money transfer operations across Sub-Saharan Africa. From the DR Congo to Namibia, Kenya,
+              and beyond — every transaction is tracked in real time.
+            </p>
+
+            <p class="about-text">
+              Built with Laravel 12, MySQL, and a modern dashboard UI, it gives administrators full
+              visibility and gives agents a simple workflow to record, confirm, and report transfers.
+            </p>
+
+            <ul class="stats-list">
+              <li class="stats-card">
+                <p class="h3 stats-title">8+</p>
+                <p class="stats-text">Countries Supported</p>
+              </li>
+              <li class="stats-card">
+                <p class="h3 stats-title">2</p>
+                <p class="stats-text">User Roles</p>
+              </li>
+              <li class="stats-card">
+                <p class="h3 stats-title">100%</p>
+                <p class="stats-text">Open Source</p>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FEATURES / SERVICES -->
+      <section class="section service" id="services">
+        <div class="container">
+
+          <h2 class="h2 section-title underline">Core Features</h2>
+
+          <ul class="service-list">
+
+            <li>
+              <div class="service-card">
+                <div class="card-icon">
+                  <ion-icon name="swap-horizontal-outline"></ion-icon>
+                </div>
+                <h3 class="h3 title">Transaction Management</h3>
+                <p class="text">
+                  Record Send and Withdrawal transactions with full sender/receiver details, amounts,
+                  fees, routes, and real-time status tracking (Pending, Completed, Cancelled).
+                </p>
+                <button class="card-btn" aria-label="Show More">
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </button>
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card">
+                <div class="card-icon">
+                  <ion-icon name="people-outline"></ion-icon>
+                </div>
+                <h3 class="h3 title">Agent Management</h3>
+                <p class="text">
+                  Administrators can create, activate, and monitor agents. Each agent operates under
+                  a unique code and country, with their own transaction history and commission tracking.
+                </p>
+                <button class="card-btn" aria-label="Show More">
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </button>
+              </div>
+            </li>
+
+            <li>
+              <div class="service-card">
+                <div class="card-icon">
+                  <ion-icon name="bar-chart-outline"></ion-icon>
+                </div>
+                <h3 class="h3 title">Statistics & Reports</h3>
+                <p class="text">
+                  Interactive charts, per-country breakdowns, monthly volumes, top routes, and
+                  CSV export for both admins and individual agents.
+                </p>
+                <button class="card-btn" aria-label="Show More">
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </button>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section features" id="features">
+        <div class="container">
+
+          <h2 class="h2 section-title underline">How It Works</h2>
+
+          <ul class="features-list">
+
+            <li>
+              <div class="features-card">
+                <div class="icon">
+                  <ion-icon name="person-add-outline"></ion-icon>
+                </div>
+                <div class="content">
+                  <h3 class="h3 title">Register as Agent</h3>
+                  <p class="text">
+                    An administrator creates and activates your agent account with a unique code and country assignment.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="features-card">
+                <div class="icon">
+                  <ion-icon name="add-circle-outline"></ion-icon>
+                </div>
+                <div class="content">
+                  <h3 class="h3 title">Record a Transfer</h3>
+                  <p class="text">
+                    Log sender info, beneficiary, origin/destination countries, amount, fee, and payment method in seconds.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+          <figure class="features-banner">
+            <img src="./assets/images/feautres-banner.png" width="369" height="318" loading="lazy" alt="How It Works"
+              class="w-100 banner-animation">
+          </figure>
+
+          <ul class="features-list">
+
+            <li>
+              <div class="features-card">
+                <div class="icon">
+                  <ion-icon name="checkmark-circle-outline"></ion-icon>
+                </div>
+                <div class="content">
+                  <h3 class="h3 title">Confirm & Track</h3>
+                  <p class="text">
+                    Update transaction status in real time. Administrators monitor all activity across every agent and country.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="features-card">
+                <div class="icon">
+                  <ion-icon name="download-outline"></ion-icon>
+                </div>
+                <div class="content">
+                  <h3 class="h3 title">Export & Report</h3>
+                  <p class="text">
+                    Download full transaction history as CSV. Agents can also message administrators directly through the report system.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+      </section>
+
+      <!-- TEAM -->
+      <section class="section blog" id="team">
+        <div class="container">
+
+          <h2 class="h2 section-title underline">Built By</h2>
+
+          <ul class="blog-list" style="justify-content:center;gap:40px;">
+
+            <li>
+              <div class="blog-card" style="max-width:340px;">
+                <figure class="banner" style="height:320px;background:#0F172A;display:flex;align-items:center;justify-content:center;border-radius:14px 14px 0 0;overflow:hidden;">
+                  <img src="./assets/images/WhatsApp_Image_2026-01-27_at_11.11.59_PM-removebg-preview.png"
+                    loading="lazy" alt="Pascal Mutaka"
+                    style="max-height:100%;object-fit:contain;">
+                </figure>
+                <div class="content">
+                  <h3 class="h3 title" style="margin-bottom:4px;">
+                    <a href="https://github.com/PascalMTK" target="_blank">Pascal Mutaka</a>
+                  </h3>
+                  <p class="text" style="font-size:1.4rem;color:#6366f1;font-weight:600;margin-bottom:10px;">
+                    Full-Stack Developer
+                  </p>
+                  <p class="text">
+                    Laravel &amp; PHP developer behind the BLUESKY Transactions platform.
+                    Designed the architecture, database, and the full admin/agent dashboard.
+                  </p>
+                  <div class="meta" style="margin-top:12px;">
+                    <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank"
+                       class="share" aria-label="GitHub" style="display:inline-flex;align-items:center;gap:5px;font-size:1.3rem;color:inherit;text-decoration:none;">
+                      <ion-icon name="logo-github"></ion-icon> GitHub
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <div class="blog-card" style="max-width:340px;">
+                <figure class="banner" style="height:320px;background:#0F172A;display:flex;align-items:center;justify-content:center;border-radius:14px 14px 0 0;overflow:hidden;">
+                  <img src="./assets/images/WhatsApp_Image_2026-01-27_at_11.11.59_PM__1_-removebg-preview.png"
+                    loading="lazy" alt="Team Member"
+                    style="max-height:100%;object-fit:contain;">
+                </figure>
+                <div class="content">
+                  <h3 class="h3 title" style="margin-bottom:4px;">
+                    <a href="#">Team Member</a>
+                  </h3>
+                  <p class="text" style="font-size:1.4rem;color:#0284C7;font-weight:600;margin-bottom:10px;">
+                    Co-Developer
+                  </p>
+                  <p class="text">
+                    Contributed to the design and development of core modules including
+                    transaction flows, country management, and the reporting system.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+
+    <div class="footer-top section">
+      <div class="container">
+
+        <div class="footer-brand">
+          <a href="#" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+            <img src="./assets/images/logo.png" alt="BlueSky Logo" width="32" height="32" style="border-radius:6px;">
+            <span class="logo">BLUESKY</span>
+          </a>
+          <p class="text" style="margin-top:14px;">
+            A complete money transfer management system for Sub-Saharan Africa.
+            Open source, built with Laravel 12 &amp; MySQL.
+          </p>
+          <ul class="social-list">
+            <li>
+              <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank" class="social-link">
+                <ion-icon name="logo-github"></ion-icon>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Navigation</p></li>
+          <li><a href="#home" class="footer-link">Home</a></li>
+          <li><a href="#about" class="footer-link">About</a></li>
+          <li><a href="#services" class="footer-link">Features</a></li>
+          <li><a href="#features" class="footer-link">How It Works</a></li>
+          <li><a href="#team" class="footer-link">Team</a></li>
+        </ul>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Key Features</p></li>
+          <li><a href="#services" class="footer-link">Transaction Recording</a></li>
+          <li><a href="#services" class="footer-link">Agent Management</a></li>
+          <li><a href="#services" class="footer-link">Statistics &amp; Charts</a></li>
+          <li><a href="#services" class="footer-link">Multi-Country Support</a></li>
+          <li><a href="#services" class="footer-link">CSV Export</a></li>
+        </ul>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Tech Stack</p></li>
+          <li><a href="#" class="footer-link">Laravel 12 (PHP)</a></li>
+          <li><a href="#" class="footer-link">MySQL</a></li>
+          <li><a href="#" class="footer-link">Tailwind CSS 4</a></li>
+          <li><a href="#" class="footer-link">Chart.js</a></li>
+          <li><a href="#" class="footer-link">Vite 7</a></li>
+        </ul>
+
+        <ul class="footer-list">
+          <li><p class="footer-list-title">Contact</p></li>
+          <li class="footer-item">
+            <div class="footer-item-icon">
+              <ion-icon name="logo-github"></ion-icon>
+            </div>
+            <div>
+              <a href="https://github.com/PascalMTK" target="_blank" class="footer-item-link">github.com/PascalMTK</a>
+            </div>
+          </li>
+          <li class="footer-item">
+            <div class="footer-item-icon">
+              <ion-icon name="mail"></ion-icon>
+            </div>
+            <div>
+              <a href="mailto:Softlaptop020@gmail.com" class="footer-item-link">Softlaptop020@gmail.com</a>
+            </div>
+          </li>
+          <li class="footer-item">
+            <div class="footer-item-icon">
+              <ion-icon name="location"></ion-icon>
+            </div>
+            <address class="footer-item-link">Sub-Saharan Africa</address>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="copyright">
+        &copy; 2026 <a href="https://github.com/PascalMTK" target="_blank" class="copyright-link">PascalMTK</a>. All Rights Reserved.
+      </p>
+    </div>
+
+  </footer>
+
+  <a href="#top" class="go-top active" aria-label="Go To Top" data-go-top>
+    <ion-icon name="arrow-up-outline"></ion-icon>
+  </a>
+
+  <script src="./assets/js/script.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
