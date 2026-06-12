@@ -234,6 +234,34 @@
     <div class="content-area page-enter">@yield('content')</div>
 </div>
 
+{{-- ===== MOBILE BOTTOM NAV ===== --}}
+<nav class="mobile-bottom-nav" aria-label="Navigation mobile">
+    @php
+        $adminLinks = $user->isAdmin() ? [
+            ['route' => 'admin.dashboard',          'icon' => '📊', 'label' => __('app.dashboard'),       'match' => 'admin.dashboard'],
+            ['route' => 'agent.transactions.create','icon' => '➕', 'label' => __('app.new'),             'match' => 'agent.transactions.create'],
+            ['route' => 'agent.transactions.index', 'icon' => '📋', 'label' => __('app.transactions'),    'match' => 'agent.transactions.index'],
+            ['route' => 'admin.agents.index',       'icon' => '👥', 'label' => __('app.agents'),          'match' => 'admin.agents.*'],
+            ['route' => 'profile.show',             'icon' => '👤', 'label' => __('app.my_profile'),      'match' => 'profile.*'],
+        ] : [
+            ['route' => 'agent.dashboard',          'icon' => '🏠', 'label' => __('app.my_space'),        'match' => 'agent.dashboard'],
+            ['route' => 'agent.transactions.create','icon' => '➕', 'label' => __('app.new'),             'match' => 'agent.transactions.create'],
+            ['route' => 'agent.transactions.index', 'icon' => '📋', 'label' => __('app.transactions'),    'match' => 'agent.transactions.index'],
+            ['route' => 'profile.show',             'icon' => '👤', 'label' => __('app.my_profile'),      'match' => 'profile.*'],
+        ];
+        $links = $user->isAdmin() ? $adminLinks : $adminLinks;
+    @endphp
+    <div class="mobile-nav-inner" style="grid-template-columns: repeat({{ $user->isAdmin() ? 5 : 4 }}, 1fr);">
+        @foreach($links as $link)
+            <a href="{{ route($link['route']) }}"
+               class="mobile-nav-item {{ request()->routeIs($link['match']) ? 'active' : '' }}">
+                <span class="mobile-nav-icon">{{ $link['icon'] }}</span>
+                <span class="mobile-nav-label">{{ $link['label'] }}</span>
+            </a>
+        @endforeach
+    </div>
+</nav>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="{{ asset('js/bluesky.js') }}"></script>
 @stack('scripts')
