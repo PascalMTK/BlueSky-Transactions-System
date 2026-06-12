@@ -21,8 +21,8 @@
     <div class="card">
         <div class="card-header">
             <div>
-                <div class="card-title">📅 {{ __('app.monthly_progression') }} — {{ now()->year }}</div>
-                <div class="card-subtitle">{{ __('app.monthly_detail') }} {{ now()->year }}</div>
+                <div class="card-title">📅 {{ __('app.monthly_progression') }}</div>
+                <div class="card-subtitle">{{ __('app.monthly_detail') }}</div>
             </div>
         </div>
         <div class="card-body">
@@ -77,7 +77,7 @@
 
 <div class="table-card">
     <div class="table-header">
-        <div class="table-title">📅 {{ __('app.monthly_detail') }} {{ now()->year }}</div>
+        <div class="table-title">📅 {{ __('app.monthly_detail') }}</div>
     </div>
     <table class="bsky-table">
         <thead>
@@ -173,7 +173,7 @@ const mChart = new Chart(document.getElementById('currentYearChart'), {
     data: {
         labels: months12,
         datasets: [{
-            label: '{{ __("app.volume") }} {{ now()->year }}',
+            label: '{{ __("app.volume") }}',
             data: monthAmounts,
             borderColor: '#10B981',
             backgroundColor: 'rgba(16,185,129,0.08)',
