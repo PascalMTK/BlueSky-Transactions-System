@@ -89,11 +89,6 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{{ route('admin.statistics') }}" class="nav-link {{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
-                    <span class="nav-icon">📈</span> {{ __('app.statistics') }}
-                </a>
-            </div>
-            <div class="nav-item">
                 <a href="{{ route('admin.reports.index') }}" class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
                     <span class="nav-icon">📨</span> {{ __('app.reports_admin_title') }}
                 </a>

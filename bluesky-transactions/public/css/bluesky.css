@@ -1085,3 +1085,68 @@ body {
     body { background: white; color: black; }
     .card, .table-card { box-shadow: none; border: 1px solid #ccc; }
 }
+
+/* ============================================================
+   DASHBOARD LAYOUT GRIDS
+   ============================================================ */
+.dash-3col  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.dash-bottom{ display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 24px; }
+
+@media (max-width: 900px) {
+    .dash-3col  { grid-template-columns: 1fr 1fr; }
+    .dash-bottom{ grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+    .dash-3col  { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   MONTHLY PROGRESSION BARS
+   ============================================================ */
+.prog-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 90px 46px;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    border-radius: 7px;
+    transition: background 0.15s;
+}
+.prog-row:hover { background: var(--bg-row-hover); }
+.prog-row.prog-current .prog-label { color: var(--sky-primary); font-weight: 800; }
+
+.prog-label {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-muted); text-align: right;
+    white-space: nowrap;
+}
+.prog-bar-track {
+    height: 20px; border-radius: 6px;
+    background: var(--bg-input);
+    overflow: hidden;
+}
+.prog-bar-fill {
+    height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, #1E3A5F, #0284C7);
+    transition: width 0.9s cubic-bezier(.4,0,.2,1);
+    min-width: 3px;
+}
+.prog-bar-fill.prog-bar-active {
+    background: linear-gradient(90deg, #0284C7, #38BDF8);
+    box-shadow: 0 0 10px rgba(2,132,199,0.35);
+}
+.prog-amount {
+    font-size: 11px; font-weight: 700;
+    color: var(--text-primary); text-align: right;
+    white-space: nowrap;
+}
+.prog-count {
+    font-size: 10px; color: var(--text-muted);
+    white-space: nowrap; text-align: right;
+}
+
+@media (max-width: 480px) {
+    .prog-row { grid-template-columns: 36px 1fr 72px; }
+    .prog-count { display: none; }
+    .prog-amount { font-size: 10px; }
+}

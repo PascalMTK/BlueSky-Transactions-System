@@ -39,7 +39,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('/agents/{agent}/promote',       [AdminController::class, 'promoteAgent'])->name('agents.promote');
     Route::delete('/agents/{agent}',              [AdminController::class, 'destroyAgent'])->name('agents.destroy');
     Route::get('/transactions',                   [AdminController::class, 'transactions'])->name('transactions.index');
-    Route::get('/statistics',                     [AdminController::class, 'statistics'])->name('statistics');
     Route::get('/export/csv',                     [ExportController::class, 'exportCsv'])->name('export.csv');
     Route::get('/reports',                        [AgentReportController::class, 'adminIndex'])->name('reports.index');
     Route::patch('/reports/{report}/read',        [AgentReportController::class, 'markRead'])->name('reports.read');

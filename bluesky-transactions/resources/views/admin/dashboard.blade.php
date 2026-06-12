@@ -94,7 +94,7 @@
 @endif
 
 {{-- Status breakdown + Aujourd'hui + Top route --}}
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
+<div class="dash-3col">
     {{-- Statuts --}}
     <div class="card" style="padding:16px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;">📊 {{ __('app.status') }}</div>
@@ -175,6 +175,38 @@
     </div>
 </div>
 
+{{-- Monthly Progression --}}
+<div class="table-card mb-20">
+    <div class="table-header">
+        <div class="table-title">📈 {{ __('app.monthly_progression') }}</div>
+        <div style="font-size:11px;color:var(--text-muted);">{{ __('app.last_12_months') }}</div>
+    </div>
+    <div style="padding:16px 20px;">
+        @php
+            $maxAmt = $monthlyData->max('total_amount') ?: 1;
+            $months12 = collect(range(0, 11))->map(function($i) {
+                $d = now()->subMonths(11 - $i);
+                return ['year' => $d->year, 'month' => $d->month, 'label' => ucfirst($d->locale(app()->getLocale())->isoFormat('MMM'))];
+            });
+        @endphp
+        @foreach($months12 as $m)
+            @php
+                $row = $monthlyData->first(fn($r) => $r->year == $m['year'] && $r->month == $m['month']);
+                $pct = $row ? round($row->total_amount / $maxAmt * 100) : 0;
+                $isCurrent = ($m['year'] == now()->year && $m['month'] == now()->month);
+            @endphp
+            <div class="prog-row{{ $isCurrent ? ' prog-current' : '' }}">
+                <div class="prog-label">{{ $m['label'] }}</div>
+                <div class="prog-bar-track">
+                    <div class="prog-bar-fill{{ $isCurrent ? ' prog-bar-active' : '' }}" style="width:{{ $pct }}%"></div>
+                </div>
+                <div class="prog-amount">{{ $row ? number_format($row->total_amount, 0, ',', ' ') : '—' }}</div>
+                <div class="prog-count">{{ $row ? $row->total.' tx' : '' }}</div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 {{-- Country Stats Table --}}
 <div class="table-card mb-20">
     <div class="table-header">
@@ -217,7 +249,7 @@
 </div>
 
 {{-- Bottom row --}}
-<div style="display:grid; grid-template-columns:2fr 1fr; gap:18px">
+<div class="dash-bottom">
     <div class="table-card">
         <div class="table-header">
             <div class="table-title">⚡ {{ __('app.recent_transactions') }}</div>
