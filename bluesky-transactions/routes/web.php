@@ -11,7 +11,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => redirect()->route('login'));
+Route::get('/', fn() => redirect()->route('register'));
 
 // Auth routes
 Route::middleware('guest')->group(function () {
