@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('app.statistics'))
 @section('page-title', __('app.statistics'))
@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="charts-row" style="margin-bottom:24px;">
-    <div class="card animate-on-scroll">
+    <div class="card">
         <div class="card-header">
             <div>
                 <div class="card-title">📊 {{ __('app.yearly_growth') }}</div>
@@ -18,7 +18,7 @@
             <canvas id="yearlyChart" height="90"></canvas>
         </div>
     </div>
-    <div class="card animate-on-scroll">
+    <div class="card">
         <div class="card-header">
             <div>
                 <div class="card-title">📅 {{ __('app.monthly_progression') }} — {{ now()->year }}</div>
@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div class="table-card mb-20 animate-on-scroll">
+<div class="table-card mb-20">
     <div class="table-header">
         <div class="table-title">📈 {{ __('app.yearly_summary') }}</div>
     </div>
@@ -75,7 +75,7 @@
     </table>
 </div>
 
-<div class="table-card animate-on-scroll">
+<div class="table-card">
     <div class="table-header">
         <div class="table-title">📅 {{ __('app.monthly_detail') }} {{ now()->year }}</div>
     </div>

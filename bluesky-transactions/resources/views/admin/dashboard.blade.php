@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', __('app.dashboard'))
 @section('page-title', __('app.dashboard'))
@@ -8,7 +8,7 @@
 
 {{-- Stats Cards with animated counters --}}
 <div class="stats-grid">
-    <div class="stat-card blue animate-on-scroll">
+    <div class="stat-card blue">
         <div class="stat-icon blue">💸</div>
         <div class="stat-info">
             <div class="stat-value" data-counter="{{ $stats['total_transactions'] }}">{{ number_format($stats['total_transactions']) }}</div>
@@ -16,7 +16,7 @@
             <div class="stat-change">📅 {{ number_format($stats['transactions_today']) }} {{ __('app.today') }}</div>
         </div>
     </div>
-    <div class="stat-card gold animate-on-scroll">
+    <div class="stat-card gold">
         <div class="stat-icon gold">💰</div>
         <div class="stat-info">
             <div class="stat-value" style="font-size:20px" data-counter="{{ $stats['total_amount'] }}" data-suffix="">
@@ -26,7 +26,7 @@
             <div class="stat-change">{{ __('app.this_month') }}: {{ number_format($stats['amount_month'], 0, ',', ' ') }}</div>
         </div>
     </div>
-    <div class="stat-card green animate-on-scroll">
+    <div class="stat-card green">
         <div class="stat-icon green">✅</div>
         <div class="stat-info">
             <div class="stat-value" style="font-size:20px" data-counter="{{ $stats['total_fees'] }}">
@@ -35,7 +35,7 @@
             <div class="stat-label">{{ __('app.total_commissions') }}</div>
         </div>
     </div>
-    <div class="stat-card purple animate-on-scroll">
+    <div class="stat-card purple">
         <div class="stat-icon purple">👥</div>
         <div class="stat-info">
             <div class="stat-value" data-counter="{{ $stats['active_agents'] }}">{{ number_format($stats['active_agents']) }}</div>
@@ -45,7 +45,7 @@
             @endif
         </div>
     </div>
-    <div class="stat-card teal animate-on-scroll">
+    <div class="stat-card teal">
         <div class="stat-icon teal">🌍</div>
         <div class="stat-info">
             <div class="stat-value" data-counter="{{ $stats['countries_active'] }}">{{ number_format($stats['countries_active']) }}</div>
@@ -53,7 +53,7 @@
             <div class="stat-change">{{ __('app.subsaharan') }}</div>
         </div>
     </div>
-    <div class="stat-card red animate-on-scroll">
+    <div class="stat-card red">
         <div class="stat-icon red">📆</div>
         <div class="stat-info">
             <div class="stat-value" data-counter="{{ $stats['transactions_month'] }}">{{ number_format($stats['transactions_month']) }}</div>
@@ -96,7 +96,7 @@
 {{-- Status breakdown + Aujourd'hui + Top route --}}
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
     {{-- Statuts --}}
-    <div class="card animate-on-scroll" style="padding:16px;">
+    <div class="card" style="padding:16px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;">📊 {{ __('app.status') }}</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
             <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -116,7 +116,7 @@
         </div>
     </div>
     {{-- Aujourd'hui --}}
-    <div class="card animate-on-scroll" style="padding:16px;">
+    <div class="card" style="padding:16px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;">☀️ {{ ucfirst(__('app.today')) }}</div>
         <div style="font-size:28px;font-weight:900;color:var(--sky-primary);line-height:1;">{{ number_format($stats['transactions_today']) }}</div>
         <div style="font-size:11px;color:var(--text-muted);margin-top:3px;margin-bottom:10px;">{{ __('app.total_transactions') }}</div>
@@ -124,7 +124,7 @@
         <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ __('app.total_volume') }}</div>
     </div>
     {{-- Top route --}}
-    <div class="card animate-on-scroll" style="padding:16px;">
+    <div class="card" style="padding:16px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:12px;">🏆 {{ __('app.top_routes') }}</div>
         @if($topRoute)
             <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:10px 0;">
@@ -147,7 +147,7 @@
 
 {{-- Charts --}}
 <div class="charts-row">
-    <div class="card animate-on-scroll">
+    <div class="card">
         <div class="card-header">
             <div>
                 <div class="card-title">📈 {{ __('app.monthly_volume') }}</div>
@@ -160,7 +160,7 @@
             </div>
         </div>
     </div>
-    <div class="card animate-on-scroll">
+    <div class="card">
         <div class="card-header">
             <div>
                 <div class="card-title">🌍 {{ __('app.country_dist') }}</div>
@@ -176,7 +176,7 @@
 </div>
 
 {{-- Country Stats Table --}}
-<div class="table-card mb-20 animate-on-scroll">
+<div class="table-card mb-20">
     <div class="table-header">
         <div class="table-title">🗺️ {{ __('app.country_stats') }}</div>
     </div>
@@ -218,7 +218,7 @@
 
 {{-- Bottom row --}}
 <div style="display:grid; grid-template-columns:2fr 1fr; gap:18px">
-    <div class="table-card animate-on-scroll">
+    <div class="table-card">
         <div class="table-header">
             <div class="table-title">⚡ {{ __('app.recent_transactions') }}</div>
             <a href="{{ route('admin.transactions.index') }}" class="btn btn-sm btn-outline-primary">{{ __('app.see_all') }} →</a>
@@ -260,7 +260,7 @@
         </table>
     </div>
 
-    <div class="table-card animate-on-scroll">
+    <div class="table-card">
         <div class="table-header">
             <div class="table-title">🏆 {{ __('app.top_agents') }}</div>
             <a href="{{ route('admin.agents.index') }}" class="btn btn-sm btn-outline-primary">{{ __('app.manage') }} →</a>
@@ -281,7 +281,7 @@
 </div>
 
 {{-- DANGER ZONE --}}
-<div class="card animate-on-scroll" style="margin-top:24px; border:2px solid rgba(239,68,68,0.22); overflow:hidden;">
+<div class="card" style="margin-top:24px; border:2px solid rgba(239,68,68,0.22); overflow:hidden;">
     <div class="card-header" style="background:rgba(239,68,68,0.04); border-bottom:1px solid rgba(239,68,68,0.14); padding:14px 22px; display:flex; align-items:center; gap:12px;">
         <div style="width:36px;height:36px;background:rgba(239,68,68,0.1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">⚠️</div>
         <div>

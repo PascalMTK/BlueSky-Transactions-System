@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    BLUESKY TRANSACTIONS — Main JavaScript
    Dark mode | Animations | Counters | UI interactions
    ============================================================ */
@@ -86,7 +86,7 @@ const CounterManager = {
         const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
 
         // Start from the server-rendered value (avoids 0-flash when values are pre-rendered)
-        const rawText  = el.textContent.trim().replace(/[\s ]/g, '').replace(/,/g, '.');
+        const rawText  = el.textContent.trim().replace(/[^0-9.]/g, '');
         const startFrom = Math.min(parseFloat(rawText) || 0, target);
 
         // Already showing the correct value — no animation needed
