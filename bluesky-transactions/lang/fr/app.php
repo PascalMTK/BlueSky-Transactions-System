@@ -395,4 +395,5 @@ return [
     'previous'              => 'Précédent',
     'next'                  => 'Suivant',
     'tip'                   => 'Astuce',
+    'session_expired'       => 'Votre session a expiré. Veuillez vous reconnecter.',
 ];
