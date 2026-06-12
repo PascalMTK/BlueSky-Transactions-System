@@ -58,7 +58,7 @@
         <div class="stat-info">
             <div class="stat-value" data-counter="{{ $stats['transactions_month'] }}">{{ number_format($stats['transactions_month']) }}</div>
             <div class="stat-label">{{ __('app.transactions_month') }}</div>
-            <div class="stat-change">{{ now()->locale(app()->getLocale())->monthName }} {{ now()->year }}</div>
+            <div class="stat-change">{{ __('app.this_month') }}</div>
         </div>
     </div>
 </div>
