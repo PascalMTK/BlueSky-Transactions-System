@@ -224,10 +224,11 @@
     }
     .net-toggle span { display:flex; align-items:center; gap:8px; }
     .net-panel {
-      display:none; margin-top:8px; border-radius:14px; padding:18px;
-      border-style:solid; border-width:1px; transition:all 0.3s;
+      overflow:hidden; max-height:0; margin-top:0; border-radius:14px; padding:0 18px;
+      border-style:solid; border-width:1px; border-color:transparent;
+      opacity:0; transition:max-height 0.32s ease, opacity 0.25s ease, padding 0.25s ease, margin-top 0.25s ease, border-color 0.25s ease;
     }
-    .net-panel.open { display:block; animation:fadeUp 0.2s ease; }
+    .net-panel.open { max-height:400px; opacity:1; padding:18px; margin-top:8px; }
     .net-panel p { font-size:12px; margin-bottom:14px; line-height:1.65; transition:color 0.3s; }
 
     .ip-input-row { display:flex; gap:8px; margin-bottom:12px; }
@@ -372,25 +373,23 @@
   </div>
 
   <div class="footer-note">
-    &copy; 2026 PascalMTK &nbsp;·&nbsp;
+    &copy; <span id="yr"></span> PascalMTK &nbsp;·&nbsp;
     <a href="https://github.com/PascalMTK/BlueSky-Transactions-System" target="_blank">GitHub</a>
     &nbsp;·&nbsp; Laravel 12
   </div>
 </div>
 
 <script>
-  // ← Remplace cette URL par ton URL Railway après déploiement
-  const RAILWAY_URL  = '';   // ex: 'https://bluesky.up.railway.app'
-  const DEFAULT_URL  = RAILWAY_URL ? RAILWAY_URL + '/login' : 'http://localhost:8000/login';
-  const STORAGE_KEY  = 'bluesky-server-url';
+  const DEFAULT_URL = 'http://localhost:8000/login';
+  const STORAGE_KEY = 'bluesky-server-url';
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
   function initBtn() {
     const saved = localStorage.getItem(STORAGE_KEY) || DEFAULT_URL;
     document.getElementById('accessBtn').href = saved;
-    if (saved !== DEFAULT_URL) {
-      const m = saved.match(/http:\/\/([\d.]+):/);
-      if (m) document.getElementById('ipInput').value = m[1];
-    }
+    const m = saved.match(/http:\/\/([\d.]+):/);
+    if (m && m[1] !== '127.0.0.1') document.getElementById('ipInput').value = m[1];
   }
 
   function applyIP() {
