@@ -396,4 +396,6 @@ return [
     'next'                  => 'Suivant',
     'tip'                   => 'Astuce',
     'session_expired'       => 'Votre session a expiré. Veuillez vous reconnecter.',
+    'avg_month'             => 'Moy / mois',
+    'best_month'            => 'Meilleur mois',
 ];

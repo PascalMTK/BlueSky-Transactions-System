@@ -396,4 +396,6 @@ return [
     'next'                  => 'Next',
     'tip'                   => 'Tip',
     'session_expired'       => 'Your session has expired. Please log in again.',
+    'avg_month'             => 'Avg / month',
+    'best_month'            => 'Best month',
 ];

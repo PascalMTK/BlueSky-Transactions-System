@@ -36,7 +36,8 @@ class AdminController extends Controller
             DB::raw('YEAR(created_at) as year'),
             DB::raw('MONTH(created_at) as month'),
             DB::raw('COUNT(*) as total'),
-            DB::raw('SUM(amount) as total_amount')
+            DB::raw('SUM(amount) as total_amount'),
+            DB::raw('SUM(fee_amount) as total_fees')
         )
             ->where('status', 'completed')
             ->where('created_at', '>=', now()->subMonths(11)->startOfMonth())

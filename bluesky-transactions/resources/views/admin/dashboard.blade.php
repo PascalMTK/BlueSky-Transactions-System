@@ -176,32 +176,112 @@
 </div>
 
 {{-- Monthly Progression --}}
+@php
+    $months12 = collect(range(0, 11))->map(function($i) {
+        $d = now()->subMonths(11 - $i);
+        return ['year' => $d->year, 'month' => $d->month,
+                'label' => ucfirst($d->locale(app()->getLocale())->isoFormat('MMM')),
+                'fullLabel' => ucfirst($d->locale(app()->getLocale())->isoFormat('MMMM YYYY'))];
+    });
+    $maxAmt      = $monthlyData->max('total_amount') ?: 1;
+    $avgAmt      = $monthlyData->count() ? $monthlyData->avg('total_amount') : 0;
+    $total12Amt  = $monthlyData->sum('total_amount');
+    $total12Tx   = $monthlyData->sum('total');
+    $total12Fees = $monthlyData->sum('total_fees');
+    $bestRow     = $monthlyData->sortByDesc('total_amount')->first();
+    $bestLabel   = $bestRow ? ucfirst(\Carbon\Carbon::createFromDate($bestRow->year, $bestRow->month, 1)->locale(app()->getLocale())->isoFormat('MMM YY')) : '—';
+@endphp
 <div class="table-card mb-20">
     <div class="table-header">
         <div class="table-title">📈 {{ __('app.monthly_progression') }}</div>
         <div style="font-size:11px;color:var(--text-muted);">{{ __('app.last_12_months') }}</div>
     </div>
-    <div style="padding:16px 20px;">
-        @php
-            $maxAmt = $monthlyData->max('total_amount') ?: 1;
-            $months12 = collect(range(0, 11))->map(function($i) {
-                $d = now()->subMonths(11 - $i);
-                return ['year' => $d->year, 'month' => $d->month, 'label' => ucfirst($d->locale(app()->getLocale())->isoFormat('MMM'))];
-            });
-        @endphp
-        @foreach($months12 as $m)
+
+    {{-- Summary chips --}}
+    <div style="display:flex;flex-wrap:wrap;gap:10px;padding:0 20px 16px;">
+        <div class="prog-chip">
+            <div class="prog-chip-icon" style="background:rgba(2,132,199,0.12);color:#0284C7;">💰</div>
+            <div>
+                <div class="prog-chip-val">{{ number_format($total12Amt, 0, ',', ' ') }}</div>
+                <div class="prog-chip-lbl">{{ __('app.total_volume_lbl') }}</div>
+            </div>
+        </div>
+        <div class="prog-chip">
+            <div class="prog-chip-icon" style="background:rgba(16,185,129,0.12);color:#10B981;">💸</div>
+            <div>
+                <div class="prog-chip-val">{{ number_format($total12Tx) }}</div>
+                <div class="prog-chip-lbl">{{ __('app.transactions_lbl') }}</div>
+            </div>
+        </div>
+        <div class="prog-chip">
+            <div class="prog-chip-icon" style="background:rgba(245,158,11,0.12);color:#F59E0B;">📊</div>
+            <div>
+                <div class="prog-chip-val">{{ number_format($avgAmt, 0, ',', ' ') }}</div>
+                <div class="prog-chip-lbl">{{ __('app.avg_month') ?? 'Moy / mois' }}</div>
+            </div>
+        </div>
+        <div class="prog-chip">
+            <div class="prog-chip-icon" style="background:rgba(139,92,246,0.12);color:#8B5CF6;">✅</div>
+            <div>
+                <div class="prog-chip-val">{{ number_format($total12Fees, 0, ',', ' ') }}</div>
+                <div class="prog-chip-lbl">{{ __('app.commissions_lbl') }}</div>
+            </div>
+        </div>
+        <div class="prog-chip">
+            <div class="prog-chip-icon" style="background:rgba(239,68,68,0.12);color:#EF4444;">🏆</div>
+            <div>
+                <div class="prog-chip-val">{{ $bestLabel }}</div>
+                <div class="prog-chip-lbl">{{ __('app.best_month') ?? 'Meilleur mois' }}</div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Bar header --}}
+    <div class="prog-header">
+        <div></div>
+        <div>{{ __('app.volume') }}</div>
+        <div class="prog-hide-xs">{{ __('app.commissions_lbl') }}</div>
+        <div style="text-align:right;">Tx</div>
+        <div style="text-align:right;">Tendance</div>
+    </div>
+
+    {{-- Bars --}}
+    <div style="padding:0 20px 16px;">
+        @foreach($months12 as $idx => $m)
             @php
-                $row = $monthlyData->first(fn($r) => $r->year == $m['year'] && $r->month == $m['month']);
-                $pct = $row ? round($row->total_amount / $maxAmt * 100) : 0;
+                $row  = $monthlyData->first(fn($r) => $r->year == $m['year'] && $r->month == $m['month']);
+                $prev = $idx > 0 ? $monthlyData->first(fn($r) => $r->year == $months12[$idx-1]['year'] && $r->month == $months12[$idx-1]['month']) : null;
+                $amt  = $row ? (float)$row->total_amount : 0;
+                $pct  = round($amt / $maxAmt * 100);
                 $isCurrent = ($m['year'] == now()->year && $m['month'] == now()->month);
+                $isBest    = $bestRow && $bestRow->year == $m['year'] && $bestRow->month == $m['month'];
+                $prevAmt   = $prev ? (float)$prev->total_amount : null;
+                $trend     = ($prevAmt && $prevAmt > 0 && $amt > 0) ? round(($amt - $prevAmt) / $prevAmt * 100, 1) : null;
+                $barClass  = $isCurrent ? 'prog-bar-active' : ($isBest ? 'prog-bar-best' : ($amt >= $avgAmt ? 'prog-bar-good' : 'prog-bar-low'));
             @endphp
-            <div class="prog-row{{ $isCurrent ? ' prog-current' : '' }}">
-                <div class="prog-label">{{ $m['label'] }}</div>
-                <div class="prog-bar-track">
-                    <div class="prog-bar-fill{{ $isCurrent ? ' prog-bar-active' : '' }}" style="width:{{ $pct }}%"></div>
+            <div class="prog-row{{ $isCurrent ? ' prog-current' : ($isBest ? ' prog-best' : '') }}" title="{{ $m['fullLabel'] }}">
+                <div class="prog-label-wrap">
+                    <span class="prog-label">{{ $m['label'] }}</span>
+                    @if($isCurrent)<span class="prog-badge prog-badge-now">{{ __('app.current') }}</span>@endif
+                    @if($isBest && !$isCurrent)<span class="prog-badge prog-badge-best">🏆</span>@endif
                 </div>
-                <div class="prog-amount">{{ $row ? number_format($row->total_amount, 0, ',', ' ') : '—' }}</div>
-                <div class="prog-count">{{ $row ? $row->total.' tx' : '' }}</div>
+                <div class="prog-bar-track">
+                    <div class="prog-bar-fill {{ $barClass }}" style="width:{{ $pct }}%">
+                        @if($pct > 18)<span class="prog-bar-label">{{ $pct }}%</span>@endif
+                    </div>
+                </div>
+                <div class="prog-amount">{{ $row ? number_format($amt, 0, ',', ' ') : '—' }}</div>
+                <div class="prog-fees prog-hide-xs">{{ $row ? number_format((float)$row->total_fees, 0, ',', ' ') : '—' }}</div>
+                <div class="prog-count">{{ $row ? number_format($row->total) : '—' }}</div>
+                <div class="prog-trend">
+                    @if($trend !== null)
+                        <span class="{{ $trend >= 0 ? 'prog-up' : 'prog-down' }}">
+                            {{ $trend >= 0 ? '▲' : '▼' }} {{ abs($trend) }}%
+                        </span>
+                    @else
+                        <span style="color:var(--text-muted);font-size:10px;">—</span>
+                    @endif
+                </div>
             </div>
         @endforeach
     </div>
